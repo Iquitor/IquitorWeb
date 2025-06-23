@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IDEA StatiCa Operations Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #111827; /* Dark Navy Background */
+            color: #d1d5db; /* Light grey text */
+        }
+        .header {
+            background-color: #1f2937; /* Darker grey header */
+            border-bottom: 1px solid #374151;
+        }
+        .card {
+            background-color: #1f2937; /* Card background */
+            border-radius: 12px;
+            border: 1px solid #374151; /* Subtle border */
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .card:hover {
+            transform: translateY(-8px);
+            border-color: #f97316; /* Orange border on hover */
+            box-shadow: 0 0 25px rgba(249, 115, 22, 0.15);
+        }
+        .card-content {
+            padding: 1.75rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .card-title {
+            color: #f97316; /* Bright Orange Title */
+            font-weight: 700;
+        }
+        .card-description {
+            color: #9ca3af; /* Muted grey for description */
+            flex-grow: 1;
+        }
+        .card-footer {
+            padding: 1.25rem 1.75rem;
+            background-color: #111827;
+            border-top: 1px solid #374151;
+            font-size: 0.875rem;
+            color: #6b7280;
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+        }
+        .intro-box {
+             background-color: #1f2937;
+             border: 1px solid #374151;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header shadow-lg">
+        <div class="container mx-auto px-6 py-6">
+            <h1 class="text-4xl font-bold text-orange-500">IDEA StatiCa Modeling Operations</h1>
+            <p class="text-lg text-gray-400 mt-1">A Visual Guide for Beginners</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-12">
+        
+        <!-- Introduction -->
+        <div class="intro-box p-8 rounded-xl shadow-md mb-12">
+            <h2 class="text-2xl font-bold mb-4 text-white">What is an Operation?</h2>
+            <p class="text-base leading-relaxed text-gray-300">In IDEA StatiCa, a connection is built by applying a series of "Operations." Each operation is a manufacturing step that adds, removes, or modifies material. You can think of it like a recipe: you start with your steel members and then apply operations like cutting, bolting, and welding in a specific order to create the final joint.</p>
+            <p class="text-base leading-relaxed mt-4 text-gray-300">This guide visually covers the most common operations you will use to model your connections.</p>
+        </div>
+
+        <!-- Operations Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+
+            <!-- Card: Cut -->
+            <div class="card">
+                <div class="card-content">
+                    <h3 class="card-title text-xl mb-3">Cut</h3>
+                    <p class="card-description mb-4">Trims members and plates. You can cut by another member, a plate, or a workplane.</p>
+                </div>
+                <div class="card-footer"><span>Use Case: Fitting a beam to a column flange.</span></div>
+            </div>
+
+            <!-- Card: End Plate -->
+            <div class="card">
+                <div class="card-content">
+                    <h3 class="card-title text-xl mb-3">End Plate</h3>
+                    <p class="card-description mb-4">Adds a plate to the end of a member and connects it to another member with bolts.</p>
+                </div>
+                <div class="card-footer"><span>Use Case: Bolted beam-to-column connection.</span></div>
+            </div>
+
+            <!-- Card: Fin Plate -->
+            <div class="card">
+                <div class="card-content">
+                    <h3 class="card-title text-xl mb-3">Fin Plate</h3>
+                    <p class="card-description mb-4">A plate welded to a supporting member and bolted to the web of a supported member.</p>
+                </div>
+                <div class="card-footer"><span>Use Case: Simple shear connection.</span></div>
+            </div>
+
+            <!-- Card: Splice -->
+            <div class="card">
+                <div class="card-content">
+                    <h3 class="card-title text-xl mb-3">Splice</h3>
+                    <p class="card-description mb-4">Connects two collinear members using plates and bolts on flanges and/or webs.</p>
+                </div>
+                <div class="card-footer"><span>Use Case: Joining two sections of a beam or column.</span></div>
+            </div>
+            
+            <!-- Card: Gusset Plate -->
+            <div class="card">
+                <div class="card-content">
+                    <h3 class="card-title text-xl mb-3">Gusset Plate</h3>
+                    <p class="card-description mb-4">Connects one or more bracing members to a main beam or column.</p>
+                </div>
+                <div class="card-footer"><span>Use Case: Truss connections, bracing frames.</span></div>
+            </div>
+
+            <!-- Card: Stiffener -->
+            <div class="card">
+                <div class="card-content">
+                    <h3 class="card-title text-xl mb-3">Stiffener</h3>
+                    <p class="card-description mb-4">A plate added to prevent local buckling of a member's web or flange.</p>
+                </div>
+                <div class="card-footer"><span>Use Case: Reinforcing a column web in a moment connection.</span></div>
+            </div>
+
+            <!-- Card: Rib -->
+            <div class="card">
+                <div class="card-content">
+                    <h3 class="card-title text-xl mb-3">Rib</h3>
+                    <p class="card-description mb-4">A triangular plate used to reinforce another plate or stiffen a flange.</p>
+                </div>
+                <div class="card-footer"><span>Use Case: Strengthening a base plate or a haunch.</span></div>
+            </div>
+
+            <!-- Card: Base Plate -->
+            <div class="card">
+                <div class="card-content">
+                    <h3 class="card-title text-xl mb-3">Base Plate</h3>
+                    <p class="card-description mb-4">Transfers loads from a column to the concrete foundation via anchors.</p>
+                </div>
+                <div class="card-footer"><span>Use Case: Column-to-foundation connection.</span></div>
+            </div>
+
+            <!-- Card: Weld -->
+            <div class="card">
+                <div class="card-content">
+                    <h3 class="card-title text-xl mb-3">Weld</h3>
+                    <p class="card-description mb-4">Joins plates or members. Can be fillet or butt welds.</p>
+                </div>
+                <div class="card-footer"><span>Use Case: Welding a beam directly to a column.</span></div>
+            </div>
+            
+            <!-- Card: Opening -->
+            <div class="card">
+                <div class="card-content">
+                    <h3 class="card-title text-xl mb-3">Opening</h3>
+                    <p class="card-description mb-4">Creates a circular or rectangular hole in a member's web or flange.</p>
+                </div>
+                <div class="card-footer"><span>Use Case: Pipe penetrations, access holes.</span></div>
+            </div>
+
+            <!-- Card: Negative Volume -->
+            <div class="card">
+                <div class="card-content">
+                    <h3 class="card-title text-xl mb-3">Negative Volume</h3>
+                    <p class="card-description mb-4">Subtracts a solid shape (e.g., cylinder, box) to create complex cutouts.</p>
+                </div>
+                <div class="card-footer"><span>Use Case: Custom-shaped holes or notches.</span></div>
+            </div>
+
+            <!-- Card: Workplane -->
+            <div class="card">
+                <div class="card-content">
+                    <h3 class="card-title text-xl mb-3">Workplane</h3>
+                    <p class="card-description mb-4">A reference plane used as a tool for other operations, like 'Cut'.</p>
+                </div>
+                <div class="card-footer"><span>Use Case: Creating a complex skew cut on a member.</span></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-12 py-8" style="background-color: #0c111a;">
+        <div class="container mx-auto px-6 text-center text-gray-500">
+            <p>&copy; 2025. This guide is for informational purposes and is not affiliated with IDEA StatiCa.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

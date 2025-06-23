@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Structural Engineer's Guide to Automation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+        /* Custom styles for interactive diagrams and animations */
+        .diagram-box {
+            border: 2px solid #e5e7eb;
+            background-color: white;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .diagram-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.1);
+            border-color: #3b82f6;
+        }
+        .arrow {
+            position: relative;
+            color: #6b7280;
+            font-size: 2.5rem;
+            line-height: 1;
+            margin: 0 1rem;
+            transition: color 0.3s ease;
+        }
+        .diagram-container:hover .arrow {
+            color: #3b82f6;
+        }
+        .flowchart-step {
+            position: relative;
+            background-color: white;
+            border: 1px solid #d1d5db;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .flowchart-step:hover {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+            transform: scale(1.05);
+            z-index: 10;
+        }
+        .flowchart-step::after {
+            content: '→';
+            position: absolute;
+            right: -2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
+            color: #9ca3af;
+        }
+        .flowchart-step.no-arrow::after {
+            content: '';
+        }
+         .flowchart-step.down-arrow::after {
+            content: '↓';
+            right: 50%;
+            top: 100%;
+            transform: translate(50%, 0.5rem);
+        }
+        .vba-ref-window {
+            background: #f9fafb;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            padding-bottom: 1rem;
+        }
+        .vba-ref-titlebar {
+            background: #e5e7eb;
+            padding: 0.5rem 1rem;
+            border-top-left-radius: 0.5rem;
+            border-top-right-radius: 0.5rem;
+            font-weight: 600;
+            color: #374151;
+            border-bottom: 1px solid #d1d5db;
+        }
+        .vba-ref-item {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            transition: background-color 0.2s;
+        }
+        .vba-ref-item:hover {
+            background-color: #eff6ff;
+        }
+        .vba-ref-item input[type="checkbox"] {
+            margin-right: 0.75rem;
+            height: 1rem;
+            width: 1rem;
+            accent-color: #3b82f6;
+        }
+        .code-block {
+            position: relative;
+        }
+        .copy-button {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            background-color: #374151;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: all 0.2s;
+            opacity: 0.8;
+        }
+        .code-block:hover .copy-button {
+            opacity: 1;
+        }
+        .copy-button:hover {
+            background-color: #1f2937;
+        }
+        .copied-message {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            background-color: #10b981;
+            color: white;
+            padding: 0.35rem 0.75rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            opacity: 0;
+            transition: opacity 0.4s;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-700">
+
+    <!-- Header Section -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div>
+                <h1 class="text-xl md:text-2xl font-extrabold text-gray-900">Structural Automation Guide</h1>
+                <p class="hidden sm:block mt-1 text-gray-500">VBA & API for ZWCAD and OpenSTAAD</p>
+            </div>
+            <nav class="hidden md:flex space-x-6 text-sm font-semibold text-gray-600">
+                <a href="#welcome" class="hover:text-blue-600 transition">Welcome</a>
+                <a href="#demystifying" class="hover:text-blue-600 transition">Concepts</a>
+                <a href="#workflow" class="hover:text-blue-600 transition">Workflow</a>
+                <a href="#getting-started" class="hover:text-blue-600 transition">Setup</a>
+                <a href="#mini-projects" class="hover:text-blue-600 transition">Projects</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-10">
+        
+        <!-- Section 1: Welcome -->
+        <section id="welcome" class="mb-16">
+            <h2 class="text-3xl font-bold text-gray-900 border-b-2 border-blue-500 pb-3 mb-6">1. Welcome to a More Efficient Way of Working</h2>
+            <p class="mb-4 text-lg">As a structural engineer, many tasks are repetitive. What if you could teach your computer to do the heavy lifting for you? This is where automation comes in, saving you hundreds of hours and reducing errors.</p>
+            <p class="mb-6">This guide introduces you to using <strong>Visual Basic for Applications (VBA)</strong> to control your essential tools: <strong>ZWCAD</strong> and <strong>STAAD.Pro</strong>.</p>
+            
+            <!-- Interactive Diagram: Command Center -->
+            <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                <h3 class="text-xl font-semibold mb-2 text-gray-800">Our Goal: The Command Center</h3>
+                <p class="mb-6 text-gray-600">Make Excel your central hub to drive both drafting and analysis.</p>
+                <div class="diagram-container flex justify-center items-center flex-wrap">
+                    <div class="diagram-box w-48">
+                        <span class="text-4xl">📄</span>
+                        <h4 class="font-bold mt-2">ZWCAD</h4>
+                        <p class="text-sm text-gray-500">Drafting</p>
+                    </div>
+                    <div class="arrow">↔️</div>
+                    <div class="diagram-box w-48 border-blue-500 scale-105">
+                        <span class="text-4xl">📊</span>
+                        <h4 class="font-bold mt-2 text-blue-600">Excel VBA</h4>
+                        <p class="text-sm text-gray-500">Controller</p>
+                    </div>
+                    <div class="arrow">↔️</div>
+                    <div class="diagram-box w-48">
+                         <span class="text-4xl">🏗️</span>
+                        <h4 class="font-bold mt-2">OpenSTAAD</h4>
+                        <p class="text-sm text-gray-500">Analysis</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Demystifying -->
+        <section id="demystifying" class="mb-16">
+            <h2 class="text-3xl font-bold text-gray-900 border-b-2 border-blue-500 pb-3 mb-6">2. Demystifying the "Magic": Core Concepts</h2>
+            <div class="grid md:grid-cols-2 gap-8 mb-8">
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <h3 class="text-xl font-bold mb-2">What is VBA? (The Recipe)</h3>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li>The programming language inside Microsoft Office.</li>
+                        <li>Think of it as a set of instructions you write for the computer to follow, which you write in the <strong>VBA Editor</strong>.</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <h3 class="text-xl font-bold mb-2">What is an API? (The Waiter)</h3>
+                     <ul class="list-disc list-inside space-y-2">
+                        <li>A "messenger" that lets different programs talk to each other.</li>
+                        <li>You give your order (commands) to the API, and it communicates them to the other software (e.g., ZWCAD).</li>
+                    </ul>
+                </div>
+            </div>
+             <!-- Interactive Diagram: API Analogy -->
+            <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                <h3 class="text-xl font-semibold mb-2 text-gray-800">The API Analogy</h3>
+                 <div class="diagram-container flex justify-center items-center flex-wrap p-4">
+                    <div class="diagram-box w-48">
+                        <span class="text-4xl">🙋‍♂️</span>
+                        <h4 class="font-bold mt-2">You in Excel</h4>
+                        <p class="text-sm text-gray-500">Give an order</p>
+                    </div>
+                    <div class="arrow text-4xl font-mono mx-4">&rarr;</div>
+                    <div class="diagram-box w-48">
+                        <span class="text-4xl">🤵</span>
+                        <h4 class="font-bold mt-2">The API</h4>
+                        <p class="text-sm text-gray-500">Takes the order</p>
+                    </div>
+                    <div class="arrow text-4xl font-mono mx-4">&rarr;</div>
+                    <div class="diagram-box w-48">
+                         <span class="text-4xl">🍳</span>
+                        <h4 class="font-bold mt-2">ZWCAD/STAAD</h4>
+                        <p class="text-sm text-gray-500">Fulfills the order</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Workflow -->
+        <section id="workflow" class="mb-16">
+            <h2 class="text-3xl font-bold text-gray-900 border-b-2 border-blue-500 pb-3 mb-6">3. The Automation Workflow</h2>
+            <p class="mb-6">Let's see how to automate a simple portal frame from start to finish.</p>
+            <div class="bg-white p-8 rounded-lg shadow-lg">
+                <div class="flex flex-col md:flex-row gap-8 items-center text-center font-semibold text-sm text-gray-700">
+                    <div class="flowchart-step down-arrow flex-1">1. Input Data in Excel (Span, Height, etc.)</div>
+                    <div class="flowchart-step down-arrow flex-1">2. Run VBA Macro</div>
+                    <div class="flowchart-step down-arrow flex-1">3. Control Other Apps</div>
+                    <div class="flowchart-step down-arrow flex-1">4. Get Results from STAAD</div>
+                    <div class="flowchart-step no-arrow flex-1">5. Generate Final Report</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Getting Started -->
+        <section id="getting-started" class="mb-16">
+            <h2 class="text-3xl font-bold text-gray-900 border-b-2 border-blue-500 pb-3 mb-6">4. Getting Started: Your First Connection</h2>
+            <p class="mb-6">Before writing code, you must enable the APIs in Excel. This is a critical first step.</p>
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <ol class="list-decimal list-inside space-y-4 text-lg">
+                    <li>Open Excel and press <kbd class="px-2 py-1.5 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-lg">Alt</kbd> + <kbd class="px-2 py-1.5 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-lg">F11</kbd> to open the VBA Editor.</li>
+                    <li>Go to <strong>Tools → References...</strong></li>
+                    <li>Find and check the boxes for the required libraries.</li>
+                </ol>
+                <!-- Interactive UI Mockup -->
+                <div class="vba-ref-window">
+                    <div class="vba-ref-titlebar">References - VBAProject</div>
+                    <div class="p-4 space-y-2">
+                        <label class="vba-ref-item"><input type="checkbox" checked><span>Visual Basic For Applications</span></label>
+                        <label class="vba-ref-item"><input type="checkbox" checked><span>Microsoft Excel 16.0 Object Library</span></label>
+                        <label class="vba-ref-item"><input type="checkbox" checked class="cursor-pointer"><span class="font-bold text-blue-600">ZWCAD 2024 Type Library</span></label>
+                        <label class="vba-ref-item"><input type="checkbox" checked class="cursor-pointer"><span class="font-bold text-blue-600">OpenSTAADUI Type Library</span></label>
+                        <label class="vba-ref-item"><input type="checkbox" class="cursor-pointer"><span>Microsoft Word 16.0 Object Library</span></label>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: Mini-Projects -->
+        <section id="mini-projects" class="mb-12">
+            <h2 class="text-3xl font-bold text-gray-900 border-b-2 border-blue-500 pb-3 mb-6">5. Your First Mini-Projects</h2>
+            <p class="mb-6">The best way to learn is by doing. Here are two simple tasks to start with.</p>
+            
+            <div class="mb-8">
+                <h3 class="text-xl font-semibold mb-2">Project 1: Draw a Line in ZWCAD</h3>
+                <div class="code-block">
+                    <pre class="bg-gray-800 text-white p-6 rounded-lg overflow-x-auto text-sm"><code class="language-vb">' --- ZWCAD: Draw a Line ---
+Sub DrawInZWCAD()
+    Dim zwcadApp As ZWCAD.Application
+    Dim startPoint(0 To 2) As Double
+    Dim endPoint(0 To 2) As Double
+
+    ' Get the running ZWCAD application
+    On Error Resume Next
+    Set zwcadApp = GetObject(, "ZWCAD.Application")
+    On Error GoTo 0
+
+    If zwcadApp Is Nothing Then
+        MsgBox "ZWCAD is not open. Please open ZWCAD and try again.", vbCritical
+        Exit Sub
+    End If
+
+    ' Define the start and end points (X, Y, Z)
+    startPoint(0) = 0: startPoint(1) = 0: startPoint(2) = 0
+    endPoint(0) = 5000: endPoint(1) = 5000: endPoint(2) = 0
+
+    ' Add the line to the model space of the active drawing
+    zwcadApp.ActiveDocument.ModelSpace.AddLine startPoint, endPoint
+    zwcadApp.ZoomExtents
+    MsgBox "A line has been drawn in ZWCAD!", vbInformation
+End Sub</code></pre>
+                    <button class="copy-button">Copy</button>
+                    <div class="copied-message">Copied!</div>
+                </div>
+            </div>
+
+            <div>
+                <h3 class="text-xl font-semibold mb-2">Project 2: Get Info from STAAD.Pro</h3>
+                <div class="code-block">
+                    <pre class="bg-gray-800 text-white p-6 rounded-lg overflow-x-auto text-sm"><code class="language-vb">' --- STAAD.Pro: Get Info ---
+Sub GetStaadInfo()
+    Dim staadApp As Object
+    Dim jobTitle As String
+
+    ' Get the OpenSTAAD object
+    On Error Resume Next
+    Set staadApp = GetObject(, "StaadPro.OpenSTAAD")
+    On Error GoTo 0
+
+    If staadApp Is Nothing Then
+        MsgBox "Could not connect to OpenSTAAD. Is a STAAD file open?", vbCritical
+        Exit Sub
+    End If
+    
+    ' Use an OpenSTAAD function to get information
+    jobTitle = staadApp.Property.GetJobTitle()
+    MsgBox "The Job Title of the open STAAD file is: " & jobTitle, vbInformation
+End Sub</code></pre>
+                    <button class="copy-button">Copy</button>
+                    <div class="copied-message">Copied!</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- What's Next Section -->
+        <section id="next-steps" class="bg-blue-600 text-white p-8 rounded-lg shadow-lg">
+             <h2 class="text-3xl font-bold pb-2 mb-4">What's Next?</h2>
+             <ul class="list-disc list-inside space-y-2">
+                <li><strong>Start Small:</strong> Modify the mini-projects. Change coordinates or get different data.</li>
+                <li><strong>Explore:</strong> Use the "Object Browser" (`F2` in VBA) to see all available commands.</li>
+                <li><strong>Build:</strong> Automate a small piece of your daily work. The portal frame is a classic project.</li>
+             </ul>
+             <p class="mt-4 font-semibold">You've taken the first step. Be patient, experiment, and you will soon be building powerful tools.</p>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-200 mt-16 py-6">
+        <div class="container mx-auto text-center text-gray-500 text-sm">
+            <p>&copy; 2025 Structural Automation Guide. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Script for copy-to-clipboard functionality
+        document.querySelectorAll('.copy-button').forEach(button => {
+            button.addEventListener('click', () => {
+                const codeBlock = button.parentElement;
+                const code = codeBlock.querySelector('code').innerText;
+                const message = codeBlock.querySelector('.copied-message');
+
+                const textArea = document.createElement('textarea');
+                textArea.value = code;
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    message.style.opacity = '1';
+                    setTimeout(() => {
+                        message.style.opacity = '0';
+                    }, 2000);
+                } catch (err) {
+                    console.error('Failed to copy text: ', err);
+                }
+                document.body.removeChild(textArea);
+            });
+        });
+    </script>
+</body>
+</html>

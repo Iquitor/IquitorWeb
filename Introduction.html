@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Interactive I-Beam Guide</title>
+    
+    <!-- Placeholder Comments as per requirements -->
+    <!-- Chosen Palette: Cool Gray & Cobalt -->
+    <!-- Application Structure Plan: A "scrollytelling" single-page application. The user scrolls through sections that build upon each other: 1. A visual hero demonstrating bending forces. 2. An interactive chart comparing I-beam vs. Rectangular beam efficiency. 3. A clear side-by-side visual of Major vs. Minor axis strength. 4. An interactive card gallery for connection pitfalls. This narrative flow transforms the static report into a guided discovery, making concepts more memorable and easier to grasp for beginners than a simple text layout. -->
+    <!-- Visualization & Content Choices: 1. Bending Forces: Animated HTML diagram to visualize abstract forces (Goal: Inform). 2. Efficiency Comparison: Dynamic Chart.js bar chart to visually quantify the strength difference (Goal: Compare). 3. Axes: Side-by-side HTML diagrams for a clear, direct comparison of orientations (Goal: Compare). 4. Pitfalls: Clickable cards with HTML icons to organize complex information into digestible, interactive chunks (Goal: Organize). -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+            color: #1e293b; /* slate-800 */
+            scroll-behavior: smooth;
+        }
+        .section-card {
+            background-color: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.05), 0 4px 6px -4px rgb(0 0 0 / 0.05);
+            border: 1px solid #e2e8f0; /* slate-200 */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .section-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+        .i-beam-visual {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .i-beam-visual .flange {
+            height: 20px;
+            width: 100%;
+            background-color: #64748b; /* slate-500 */
+            border-radius: 2px;
+        }
+        .i-beam-visual .web {
+            height: 100px;
+            width: 12px;
+            background-color: #94a3b8; /* slate-400 */
+        }
+        .rect-beam-visual {
+            height: 80px;
+            width: 100%;
+            background-color: #64748b; /* slate-500 */
+            border-radius: 2px;
+        }
+        .axis-beam {
+            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+        .axis-card:hover .axis-beam.major {
+            transform: scale(0.98) rotateX(5deg);
+        }
+        .axis-card:hover .axis-beam.minor {
+             transform: scale(0.95) rotateY(5deg) rotateX(15deg);
+        }
+        .pitfall-card {
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        .pitfall-card .pitfall-icon-container {
+            transition: transform 0.3s ease;
+        }
+        .pitfall-card:hover .pitfall-icon-container {
+            transform: scale(1.1);
+        }
+        .pitfall-card .pitfall-explanation {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out, padding 0.5s ease-out;
+        }
+         .pitfall-card.active .pitfall-explanation {
+            max-height: 200px; /* Adjust as needed */
+        }
+        .pitfall-card.active .arrow-indicator {
+            transform: rotate(180deg);
+        }
+        .arrow-indicator {
+            transition: transform 0.3s ease;
+        }
+
+        /* New 3D Bending Styles */
+        .perspective-container {
+            perspective: 800px;
+        }
+        .bent-beam {
+            width: 250px;
+            transform-style: preserve-3d;
+            transform: rotateY(-30deg) rotateX(15deg);
+        }
+        .bent-beam-flange {
+            width: 100%;
+            height: 20px;
+            background: #94a3b8;
+            border: 1px solid #475569;
+            position: relative;
+        }
+        .bent-beam-flange.top {
+            transform: translateZ(30px) scale(1.05);
+            border-radius: 50% / 100% 100% 0 0;
+            background: linear-gradient(to right, #a5b4fc, #6366f1);
+        }
+        .bent-beam-flange.bottom {
+            transform: translateZ(-30px) scale(0.95);
+            border-radius: 0 0 50% 50% / 0 0 100% 100%;
+            background: linear-gradient(to right, #fca5a5, #ef4444);
+        }
+        .bent-beam-web {
+            width: 12px;
+            height: 120px;
+            background: linear-gradient(#a5b4fc, #cbd5e1, #fca5a5);
+            margin: -10px auto;
+            border-radius: 50% / 10%;
+            transform: scaleY(1.1);
+        }
+        .stress-line {
+            position: absolute;
+            background: #475569;
+            height: 1px;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header & Hero -->
+    <header class="w-full text-center py-16 md:py-24 bg-white">
+        <div class="container mx-auto px-6">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight">The Beginner's Guide to I-Beams</h1>
+            <p class="mt-4 text-lg text-slate-600 max-w-2xl mx-auto">Ever wondered why you see so many "I" shaped beams in buildings and bridges? Let's explore the brilliant engineering behind them.</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-12 space-y-20 md:space-y-24">
+
+        <!-- Section 1: The Basics of Bending -->
+        <section id="basics" class="section-card p-8 md:p-10">
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <div class="prose max-w-none">
+                    <h2 class="text-3xl font-bold text-slate-800">1. What Happens When a Beam Bends?</h2>
+                    <p>When a load pushes down on a beam, it causes <strong>bending</strong>. This creates powerful internal forces.</p>
+                    <ul class="space-y-2">
+                        <li>The top gets squeezed together (<strong>Compression Stress</strong>).</li>
+                        <li>The bottom gets stretched apart (<strong>Tension Stress</strong>).</li>
+                        <li>An imaginary line in the middle, the <strong>Neutral Axis</strong>, feels no stress at all.</li>
+                    </ul>
+                    <div class="mt-4 p-4 bg-slate-50 rounded-lg border border-slate-200">
+                        <p class="font-mono text-sm text-slate-700 font-semibold">Bending Moment (torque)</p>
+                        <p class="font-mono text-sm text-slate-700">Mf = 1/4 x P x L</p>
+                    </div>
+                </div>
+                <div class="relative min-h-[300px] flex flex-col justify-center items-center p-4">
+                    <div class="perspective-container">
+                        <div class="bent-beam">
+                            <div class="bent-beam-flange top"></div>
+                            <div class="bent-beam-web"></div>
+                            <div class="bent-beam-flange bottom"></div>
+                        </div>
+                    </div>
+                    <!-- Annotations -->
+                    <div class="absolute top-[60px] right-0 text-right">
+                        <p class="font-semibold text-blue-700">Compression Stress</p>
+                        <div class="stress-line w-16 -right-4 top-1/2 -translate-y-1/2 transform -rotate-6"></div>
+                    </div>
+                    <div class="absolute top-1/2 -translate-y-1/2 right-[10px]">
+                        <p class="font-semibold text-slate-700">No Stress</p>
+                        <p class="font-semibold text-slate-700 text-xs">(Neutral Axis)</p>
+                    </div>
+                     <div class="absolute bottom-[60px] right-0 text-right">
+                        <p class="font-semibold text-red-700">Tension Stress</p>
+                        <div class="stress-line w-16 -right-4 top-1/2 -translate-y-1/2 transform rotate-6"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Why the I-Beam? -->
+        <section id="why" class="section-card p-8 md:p-10">
+            <h2 class="text-3xl font-bold text-slate-800 text-center">2. Why Use an I-Beam? It's All About Efficiency.</h2>
+            <p class="text-center text-slate-600 mt-2 max-w-3xl mx-auto">For the same amount of material, an I-beam is much stronger against bending forces than a solid rectangular beam. This chart shows the massive difference in "Bending Resistance" (a simplified term for Moment of Inertia).</p>
+            <div class="grid md:grid-cols-2 gap-8 mt-8 items-center">
+                <div>
+                     <div class="text-center">
+                        <div class="i-beam-visual w-40 h-32 mx-auto">
+                            <div class="flange"></div>
+                            <div class="web"></div>
+                            <div class="flange"></div>
+                        </div>
+                        <h3 class="font-bold mt-4">I-Beam</h3>
+                        <p class="text-sm text-slate-500">Material is concentrated at the top and bottom, where stress is highest.</p>
+                     </div>
+                     <div class="text-center mt-8">
+                        <div class="rect-beam-visual w-24 h-24 mx-auto"></div>
+                        <h3 class="font-bold mt-4">Rectangular Beam</h3>
+                        <p class="text-sm text-slate-500">Same amount of material, but less efficient shape.</p>
+                     </div>
+                </div>
+                <div class="chart-container relative h-96 w-full max-w-md mx-auto">
+                    <canvas id="resistanceChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Major vs Minor Axis -->
+        <section id="axes" class="section-card p-8 md:p-10">
+            <h2 class="text-3xl font-bold text-slate-800 text-center">3. A Beam's Strength is Directional</h2>
+            <p class="text-center text-slate-600 mt-2 max-w-3xl mx-auto">An I-beam isn't equally strong in all directions. It must be oriented correctly to do its job.</p>
+            <div class="grid md:grid-cols-2 gap-8 mt-8">
+                <div class="axis-card bg-slate-50 p-6 rounded-lg text-center border-2 border-green-300">
+                    <h3 class="text-xl font-bold text-green-800">Major Axis (Super Strong)</h3>
+                    <p class="text-sm text-slate-600 h-12">When standing up, it can resist massive loads.</p>
+                    <div class="h-40 flex items-center justify-center perspective-1000">
+                        <div class="i-beam-visual w-32 h-32 mx-auto axis-beam major">
+                            <div class="flange"></div>
+                            <div class="web"></div>
+                            <div class="flange"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="axis-card bg-slate-50 p-6 rounded-lg text-center border-2 border-red-300">
+                    <h3 class="text-xl font-bold text-red-800">Minor Axis (Much Weaker)</h3>
+                    <p class="text-sm text-slate-600 h-12">When lying on its side, it bends very easily.</p>
+                     <div class="h-40 flex items-center justify-center perspective-1000">
+                        <div class="i-beam-visual w-40 h-20 mx-auto transform rotate-90 axis-beam minor">
+                            <div class="flange !h-10 !w-full"></div>
+                            <div class="web !h-20 !w-8"></div>
+                            <div class="flange !h-10 !w-full"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Connection Pitfalls -->
+        <section id="connections" class="section-card p-8 md:p-10">
+            <h2 class="text-3xl font-bold text-slate-800 text-center">4. Connection is Key</h2>
+            <p class="text-center text-slate-600 mt-2 max-w-3xl mx-auto">A structure is only as strong as its weakest link. Proper connection design is critical. Click each card to learn more.</p>
+            <div class="grid md:grid-cols-3 gap-6 mt-8">
+                <div class="pitfall-card border border-slate-200 rounded-lg p-4 text-center bg-slate-50">
+                    <div class="pitfall-icon-container flex justify-center items-center h-20">
+                        <!-- Icon for Twisting Forces -->
+                        <div class="w-4 h-12 bg-slate-400 transform -rotate-12"></div>
+                        <div class="w-4 h-12 bg-slate-600 transform rotate-12 -ml-2"></div>
+                    </div>
+                    <h3 class="font-bold mt-2">Twisting Forces</h3>
+                    <div class="pitfall-explanation">
+                         <p class="text-sm text-slate-600 text-left mt-2 p-2">Connections must be centered. If they're off to one side, they can create a twisting force that the beam isn't designed to handle.</p>
+                    </div>
+                    <div class="w-full text-xs font-bold text-blue-600 mt-2 flex justify-center items-center">
+                        <span>Details</span> 
+                        <span class="arrow-indicator ml-1">▼</span>
+                    </div>
+                </div>
+                <div class="pitfall-card border border-slate-200 rounded-lg p-4 text-center bg-slate-50">
+                    <div class="pitfall-icon-container flex justify-center items-center h-20">
+                        <!-- Icon for Web Crushing -->
+                        <div class="w-12 h-3 bg-slate-600 relative">
+                             <div class="absolute bottom-full left-1/2 -translate-x-1/2 w-0 h-0 border-l-8 border-r-8 border-b-8 border-l-transparent border-r-transparent border-b-slate-600"></div>
+                        </div>
+                         <div class="w-2 h-10 bg-slate-400 transform scale-y-75 -ml-7"></div>
+                    </div>
+                    <h3 class="font-bold mt-2">Web Crushing</h3>
+                     <div class="pitfall-explanation">
+                         <p class="text-sm text-slate-600 text-left mt-2 p-2">The thin middle "web" can buckle or crush under a concentrated force. Good design spreads the load out evenly to prevent this.</p>
+                    </div>
+                     <div class="w-full text-xs font-bold text-blue-600 mt-2 flex justify-center items-center">
+                        <span>Details</span> 
+                        <span class="arrow-indicator ml-1">▼</span>
+                    </div>
+                </div>
+                 <div class="pitfall-card border border-slate-200 rounded-lg p-4 text-center bg-slate-50">
+                    <div class="pitfall-icon-container flex justify-center items-center h-20">
+                        <!-- Icon for Bolt Placement -->
+                        <div class="w-20 h-10 border-2 border-dashed border-slate-400 flex justify-start items-center p-1">
+                            <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                        </div>
+                    </div>
+                    <h3 class="font-bold mt-2">Bolt Placement</h3>
+                    <div class="pitfall-explanation">
+                         <p class="text-sm text-slate-600 text-left mt-2 p-2">Bolts placed too close to an edge can cause the steel to tear, much like punching a hole too close to the edge of paper.</p>
+                    </div>
+                    <div class="w-full text-xs font-bold text-blue-600 mt-2 flex justify-center items-center">
+                        <span>Details</span> 
+                        <span class="arrow-indicator ml-1">▼</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="text-center py-10 mt-12 bg-white border-t border-slate-200">
+        <p class="text-sm text-slate-500">Created by IQUITOR</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Chart.js: Bending Resistance Comparison
+            const ctx = document.getElementById('resistanceChart');
+            if(ctx) {
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Bending Resistance'],
+                        datasets: [
+                            {
+                                label: 'Rectangular Beam',
+                                data: [15], // Arbitrary low value
+                                backgroundColor: 'rgba(148, 163, 184, 0.6)', // slate-400
+                                borderColor: 'rgb(100, 116, 139)', // slate-500
+                                borderWidth: 2
+                            },
+                            {
+                                label: 'I-Beam (Same Area)',
+                                data: [100], // Arbitrary high value
+                                backgroundColor: 'rgba(59, 130, 246, 0.6)', // blue-500
+                                borderColor: 'rgb(37, 99, 235)', // blue-700
+                                borderWidth: 2
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            },
+                            title: {
+                                display: true,
+                                text: 'I-Beam vs. Rectangular Beam Efficiency'
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Relative Bending Resistance'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Accordion for Pitfall Cards
+            const pitfallCards = document.querySelectorAll('.pitfall-card');
+            pitfallCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    // Optional: Close other cards when one is opened
+                    pitfallCards.forEach(otherCard => {
+                        if (otherCard !== card) {
+                            otherCard.classList.remove('active');
+                        }
+                    });
+                    card.classList.toggle('active');
+                });
+            });
+
+        });
+    </script>
+
+</body>
+</html>

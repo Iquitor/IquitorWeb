@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Master Steel Connection Design with IDEA StatiCa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .gradient-text {
+            background: -webkit-linear-gradient(#F97316, #EA580C);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .card {
+            background-color: #1F2937; /* gray-800 */
+            border: 1px solid #374151; /* gray-700 */
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-200">
+
+    <!-- Header -->
+    <header class="bg-gray-900/80 backdrop-blur-sm sticky top-0 z-50 border-b border-gray-800">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-white">
+                IQUITOR
+            </h1>
+            <p class="text-sm font-semibold text-orange-500">Steel Connection Design</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-12 md:py-20">
+
+        <!-- Welcome Section -->
+        <section class="text-center mb-20">
+            <h2 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-4 text-white">Welcome to the Course!</h2>
+            <p class="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto mb-8">
+                We're excited to have you join the "Master Steel Connection Design with IDEA StatiCa" course. Thank you for committing to advance your skills. Let's push the boundaries of structural engineering together.
+            </p>
+            <img src="https://placehold.co/1000x500/111827/F97316?text=Steel+Connection+Analysis" 
+                 alt="Abstract visualization of a complex steel connection"
+                 class="rounded-xl mx-auto shadow-2xl shadow-orange-500/10 mt-10 w-full max-w-5xl object-cover"
+                 onerror="this.onerror=null;this.src='https://placehold.co/1000x500/111827/F97316?text=Image+Not+Available';">
+        </section>
+
+        <!-- What You'll Learn Section -->
+        <section class="mb-20">
+            <h3 class="text-3xl font-bold text-center mb-12 gradient-text">What You'll Learn</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <div class="card p-6">
+                    <h4 class="font-bold text-lg mb-2 text-white">Bolted & Welded Connections</h4>
+                    <p class="text-gray-400">Master the techniques for modeling precise and efficient bolted and welded steel connections.</p>
+                </div>
+                <div class="card p-6">
+                    <h4 class="font-bold text-lg mb-2 text-white">AISC Code Compliance</h4>
+                    <p class="text-gray-400">Ensure your designs meet the rigorous standards of the American Institute of Steel Construction.</p>
+                </div>
+                <div class="card p-6">
+                    <h4 class="font-bold text-lg mb-2 text-white">Moment & Pinned Connections</h4>
+                    <p class="text-gray-400">Deep dive into the design and analysis of the most common and critical connection types.</p>
+                </div>
+                <div class="card p-6">
+                    <h4 class="font-bold text-lg mb-2 text-white">Base Plate Design</h4>
+                    <p class="text-gray-400">Learn the fundamentals of designing robust and stable base plates for various column types.</p>
+                </div>
+                <div class="card p-6">
+                    <h4 class="font-bold text-lg mb-2 text-white">Parametric Modeling</h4>
+                    <p class="text-gray-400">Develop versatile models that can be easily adapted to a wide range of project requirements.</p>
+                </div>
+                <div class="card p-6">
+                    <h4 class="font-bold text-lg mb-2 text-white">CBFEM-Powered Analysis</h4>
+                    <p class="text-gray-400">Leverage the power of Component-Based Finite Element Method for accurate and fast analysis.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Instructors Section -->
+        <section class="mb-20 py-16 bg-gray-800/50 rounded-xl">
+            <h3 class="text-3xl font-bold text-center mb-12 text-white">Meet Your Instructors</h3>
+            <div class="flex flex-wrap justify-center gap-10">
+                <div class="text-center">
+                    <img src="https://placehold.co/128x128/1F2937/F97316?text=NK" alt="Instructor Nipin Krishna A R" class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-gray-700 shadow-lg">
+                    <h4 class="text-xl font-semibold text-white">Nipin Krishna A R</h4>
+                </div>
+                <div class="text-center">
+                    <img src="https://placehold.co/128x128/1F2937/F97316?text=VK" alt="Instructor Vivek K" class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-gray-700 shadow-lg">
+                    <h4 class="text-xl font-semibold text-white">Vivek K</h4>
+                </div>
+                <div class="text-center">
+                    <img src="https://placehold.co/128x128/1F2937/F97316?text=FS" alt="Instructor Faris Syed" class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-gray-700 shadow-lg">
+                    <h4 class="text-xl font-semibold text-white">Faris Syed</h4>
+                </div>
+            </div>
+        </section>
+
+        <!-- Course Modules Section -->
+        <section>
+            <h3 class="text-3xl font-bold text-center mb-12 gradient-text">Course Curriculum</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Module 1 -->
+                <div class="card">
+                    <h4 class="font-bold text-lg text-orange-500 mb-3">Module 1: Introduction</h4>
+                    <ul class="list-disc list-inside text-gray-400 space-y-1">
+                        <li>Fundamentals of steel connections</li>
+                        <li>Types of steel connections</li>
+                        <li>Code-based design overview</li>
+                        <li>Connection failure modes</li>
+                        <li>Introduction to IDEA StatiCa</li>
+                    </ul>
+                </div>
+                <!-- Module 2 -->
+                <div class="card">
+                    <h4 class="font-bold text-lg text-orange-500 mb-3">Module 2: Getting Started</h4>
+                    <ul class="list-disc list-inside text-gray-400 space-y-1">
+                        <li>User Interface Walkthrough</li>
+                        <li>Overview of templates & libraries</li>
+                        <li>The workflow: Model > Load > Check > Report</li>
+                    </ul>
+                </div>
+                <!-- Module 3 -->
+                <div class="card">
+                    <h4 class="font-bold text-lg text-orange-500 mb-3">Module 3: Modeling Connections</h4>
+                    <ul class="list-disc list-inside text-gray-400 space-y-1">
+                        <li>Creating connections with templates</li>
+                        <li>Manual modeling of custom joints</li>
+                        <li>Setting boundary conditions</li>
+                        <li>Assignment 1: Custom modeling</li>
+                    </ul>
+                </div>
+                <!-- Module 4 -->
+                <div class="card">
+                    <h4 class="font-bold text-lg text-orange-500 mb-3">Module 4: BIM Integration</h4>
+                    <ul class="list-disc list-inside text-gray-400 space-y-1">
+                        <li>Workflow with STAAD.Pro</li>
+                        <li>Using the IDEA StatiCa Checkbot</li>
+                    </ul>
+                </div>
+                <!-- Module 5 -->
+                <div class="card">
+                    <h4 class="font-bold text-lg text-orange-500 mb-3">Module 5: Load Application</h4>
+                    <ul class="list-disc list-inside text-gray-400 space-y-1">
+                        <li>Types of loads and combinations</li>
+                        <li>Applying forces and moments</li>
+                        <li>Significance of load positioning</li>
+                    </ul>
+                </div>
+                <!-- Module 6 -->
+                <div class="card">
+                    <h4 class="font-bold text-lg text-orange-500 mb-3">Module 6: Code Checking</h4>
+                    <ul class="list-disc list-inside text-gray-400 space-y-1">
+                        <li>Design checks as per AISC</li>
+                        <li>Interpreting results</li>
+                        <li>Addressing errors and warnings</li>
+                        <li>Buckling analysis interpretation</li>
+                    </ul>
+                </div>
+                <!-- Module 7 -->
+                <div class="card">
+                    <h4 class="font-bold text-lg text-orange-500 mb-3">Module 7: Advanced Features</h4>
+                    <ul class="list-disc list-inside text-gray-400 space-y-1">
+                        <li>Parametric modeling</li>
+                        <li>Weld and bolt detailing</li>
+                        <li>Plate buckling significance</li>
+                    </ul>
+                </div>
+                <!-- Module 8 -->
+                <div class="card">
+                    <h4 class="font-bold text-lg text-orange-500 mb-3">Module 8: Real-World Examples</h4>
+                    <ul class="list-disc list-inside text-gray-400 space-y-1">
+                        <li>Extended moment connections</li>
+                        <li>Bracing with gusset plates</li>
+                        <li>Base plate design</li>
+                        <li>Complex multi-member joints</li>
+                    </ul>
+                </div>
+                <!-- Module 9 -->
+                <div class="card">
+                    <h4 class="font-bold text-lg text-orange-500 mb-3">Module 9: Documentation</h4>
+                    <ul class="list-disc list-inside text-gray-400 space-y-1">
+                        <li>Generating design reports</li>
+                        <li>Customizing report content</li>
+                        <li>Exporting drawings & snapshots</li>
+                    </ul>
+                </div>
+                <!-- Pinnacle Project -->
+                <div class="card md:col-span-2 lg:col-span-3 bg-orange-600/20 border-orange-500">
+                    <h4 class="font-bold text-xl text-orange-400 mb-3">Pinnacle Project</h4>
+                    <p class="text-gray-300">A final project to apply all your learned skills:</p>
+                    <ul class="list-disc list-inside text-gray-300 mt-2 space-y-1 pl-2">
+                        <li>Advanced Multi-Directional Steel Connection Modeling in IDEA StatiCa</li>
+                        <li>Parametric Design of Versatile Structural Joints for Complex Load Paths</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-gray-800 mt-20">
+        <div class="container mx-auto px-6 py-8 text-center text-gray-500">
+            <p>&copy; 2025 IQUITOR. We're excited for this journey with you.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

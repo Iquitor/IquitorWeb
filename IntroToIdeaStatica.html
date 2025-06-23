@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Overview: IDEA StatiCa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .nav-link { transition: color 0.3s, border-bottom-color 0.3s; }
+        .nav-link.active { color: #f59e0b; border-bottom-color: #f59e0b; }
+        .nav-link:hover { color: #f59e0b; }
+        .tab.active { background-color: #f59e0b; color: #ffffff; }
+        .tab:not(.active) { background-color: #e2e8f0; }
+        .interactive-zone { transition: background-color 0.3s, border-color 0.3s, transform 0.2s; }
+        .interactive-zone:hover { background-color: rgba(245, 158, 11, 0.3); border-color: rgba(245, 158, 11, 0.7); transform: scale(1.02); }
+        .chart-container { position: relative; width: 100%; max-width: 400px; margin-left: auto; margin-right: auto; height: 320px; max-height: 350px; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <span class="font-bold text-xl text-slate-900">IDEA StatiCa Tour</span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#tour" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600 border-b-2 border-transparent">Interface Tour</a>
+                        <a href="#ribbon" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600 border-b-2 border-transparent">Ribbon Menu</a>
+                        <a href="#workflow" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600 border-b-2 border-transparent">Workflow</a>
+                        <a href="#analysis" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600 border-b-2 border-transparent">Analysis & Reports</a>
+                        <a href="#modeling" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600 border-b-2 border-transparent">Modeling</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="hero" class="bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
+                <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-slate-900">An Interactive Guide to IDEA StatiCa</h1>
+                <p class="mt-4 max-w-2xl mx-auto text-lg text-slate-600">Explore the powerful user interface and core features of IDEA StatiCa Connection. This guide transforms the standard software overview into an engaging, hands-on experience.</p>
+            </div>
+        </section>
+
+        <section id="tour" class="py-20">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-slate-900">Interface Tour</h2>
+                    <p class="mt-2 text-slate-600 max-w-2xl mx-auto">Hover over the highlighted zones in the diagram below to learn about each primary area of the IDEA StatiCa user interface.</p>
+                </div>
+                <div class="relative max-w-5xl mx-auto border border-slate-200 rounded-lg shadow-lg p-4 bg-white">
+                    <div class="absolute inset-0 bg-cover bg-center rounded-lg" style="background-image: url('https://storage.googleapis.com/gemini-prod/images/07d84860-2ef8-4e89-98dd-f762dd2e6840'); filter: blur(4px) opacity(0.6);"></div>
+                    <div class="relative grid grid-cols-6 grid-rows-5 gap-2 h-[500px]">
+                        <div id="zone-ribbon" class="interactive-zone col-span-6 row-span-1 border-2 border-dashed border-slate-400 rounded-md cursor-pointer flex items-center justify-center" data-title="A. Ribbon Menu" data-text="A tab-based menu at the top that contains all primary commands, organized by workflow stages like Design, Check, and Report."></div>
+                        <div id="zone-nav" class="interactive-zone col-span-1 row-span-4 border-2 border-dashed border-slate-400 rounded-md cursor-pointer flex items-center justify-center" data-title="C. Navigation" data-text="A tree-based list on the left showing all components in your project, such as members, plates, welds, and load effects."></div>
+                        <div id="zone-viewport" class="interactive-zone col-span-3 row-span-4 border-2 border-dashed border-slate-400 rounded-md cursor-pointer flex items-center justify-center" data-title="B. 3D Viewport" data-text="The central workspace where the 3D model of the connection is displayed and can be visually inspected and manipulated."></div>
+                        <div id="zone-properties" class="interactive-zone col-span-2 row-span-4 border-2 border-dashed border-slate-400 rounded-md cursor-pointer flex items-center justify-center" data-title="D. Data & Properties" data-text="The pane on the right for inputting and reviewing detailed numerical data, including member forces and analysis results."></div>
+                        <div id="zone-footer" class="interactive-zone col-span-6 row-start-6 h-10 -mt-2 border-2 border-dashed border-slate-400 rounded-md cursor-pointer flex items-center justify-center" data-title="E. Footer" data-text="The footer displays key project settings like the active Design Code and Units, providing at-a-glance information."></div>
+                    </div>
+                    <div id="tour-tooltip" class="absolute hidden bg-slate-900 text-white p-4 rounded-lg shadow-xl z-20 pointer-events-none">
+                        <h4 id="tooltip-title" class="font-bold"></h4>
+                        <p id="tooltip-text" class="text-sm mt-1"></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="ribbon" class="py-20 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-slate-900">Ribbon Menu Deep Dive</h2>
+                    <p class="mt-2 text-slate-600 max-w-2xl mx-auto">The Ribbon is your command center. Click on the tabs below to explore the tools and functions available in each category.</p>
+                </div>
+                <div class="max-w-4xl mx-auto">
+                    <div class="flex flex-wrap justify-center gap-2 mb-6">
+                        <button class="tab px-4 py-2 text-sm font-semibold rounded-full transition" data-tab="project">PROJECT</button>
+                        <button class="tab px-4 py-2 text-sm font-semibold rounded-full transition active" data-tab="design">DESIGN</button>
+                        <button class="tab px-4 py-2 text-sm font-semibold rounded-full transition" data-tab="check">CHECK</button>
+                        <button class="tab px-4 py-2 text-sm font-semibold rounded-full transition" data-tab="report">REPORT</button>
+                        <button class="tab px-4 py-2 text-sm font-semibold rounded-full transition" data-tab="materials">MATERIALS</button>
+                        <button class="tab px-4 py-2 text-sm font-semibold rounded-full transition" data-tab="developer">DEVELOPER</button>
+                    </div>
+                    <div id="tab-content" class="bg-slate-100 p-6 rounded-lg min-h-[200px]">
+                        <div class="tab-pane hidden" data-pane="project">
+                            <h3 class="font-bold text-lg mb-2">Project Management</h3>
+                            <p>Manages project-level settings. Here you can create new projects, open existing files, and manage global project parameters.</p>
+                        </div>
+                        <div class="tab-pane" data-pane="design">
+                            <h3 class="font-bold text-lg mb-2">Core Modeling Tools</h3>
+                            <p>This is where connections are built. Key tools include adding structural Members and Plates, applying manufacturing Operations like welds and bolts, and accessing the Connection Library for reusable templates.</p>
+                        </div>
+                        <div class="tab-pane hidden" data-pane="check">
+                            <h3 class="font-bold text-lg mb-2">Analysis & Verification</h3>
+                            <p>Contains tools to run various analyses on your model. You can perform Stress/Strain checks, Stiffness analysis, and Buckling analysis. The main 'Calculate' button initiates the finite element analysis.</p>
+                        </div>
+                        <div class="tab-pane hidden" data-pane="report">
+                            <h3 class="font-bold text-lg mb-2">Documentation & Output</h3>
+                            <p>Generates detailed calculation reports, bills of material, and drawings. Reports are highly customizable and can be exported to standard formats like PDF and DOC for submittals.</p>
+                        </div>
+                         <div class="tab-pane hidden" data-pane="materials">
+                            <h3 class="font-bold text-lg mb-2">Material Definitions</h3>
+                            <p>Defines and manages the material grades for all components in the project, including steel plates, bolts, and concrete blocks, ensuring calculations are based on the correct material properties.</p>
+                        </div>
+                         <div class="tab-pane hidden" data-pane="developer">
+                            <h3 class="font-bold text-lg mb-2">Advanced Customization</h3>
+                            <p>Provides access to advanced features such as creating parametric designs, interacting with the software's API for custom scripts, and other automation tools for power users.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="workflow" class="py-20">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-slate-900">Core BIM Workflow</h2>
+                    <p class="mt-2 text-slate-600 max-w-2xl mx-auto">IDEA StatiCa excels in a BIM workflow, seamlessly integrating with your existing FEA and CAD software via the Checkbot application.</p>
+                </div>
+                <div class="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-0 text-center">
+                    <div class="p-4 flex-1">
+                        <div class="bg-white p-6 rounded-lg shadow-md h-full">
+                            <div class="text-2xl mb-2">1</div>
+                            <h3 class="font-semibold text-lg mb-2">FEA/CAD Model</h3>
+                            <p class="text-sm text-slate-600">Start in your primary analysis or modeling software (e.g., SAP2000, Revit, Tekla).</p>
+                        </div>
+                    </div>
+                    <div class="text-4xl text-amber-500 font-light mx-4 hidden md:block">&rarr;</div>
+                    <div class="text-4xl text-amber-500 font-light my-2 md:hidden">&darr;</div>
+                    <div class="p-4 flex-1">
+                        <div class="bg-white p-6 rounded-lg shadow-md h-full">
+                             <div class="text-2xl mb-2">2</div>
+                            <h3 class="font-semibold text-lg mb-2">Import to Checkbot</h3>
+                            <p class="text-sm text-slate-600">Use Checkbot to import geometry, sections, and load cases directly into IDEA StatiCa.</p>
+                        </div>
+                    </div>
+                     <div class="text-4xl text-amber-500 font-light mx-4 hidden md:block">&rarr;</div>
+                    <div class="text-4xl text-amber-500 font-light my-2 md:hidden">&darr;</div>
+                    <div class="p-4 flex-1">
+                        <div class="bg-amber-500 text-white p-6 rounded-lg shadow-lg ring-4 ring-amber-200 h-full">
+                             <div class="text-2xl mb-2">3</div>
+                            <h3 class="font-semibold text-lg mb-2">Design & Check</h3>
+                            <p class="text-sm text-amber-100">Design the connection and run comprehensive code-checks within IDEA StatiCa.</p>
+                        </div>
+                    </div>
+                     <div class="text-4xl text-amber-500 font-light mx-4 hidden md:block">&rarr;</div>
+                    <div class="text-4xl text-amber-500 font-light my-2 md:hidden">&darr;</div>
+                    <div class="p-4 flex-1">
+                        <div class="bg-white p-6 rounded-lg shadow-md h-full">
+                             <div class="text-2xl mb-2">4</div>
+                            <h3 class="font-semibold text-lg mb-2">Export & Report</h3>
+                            <p class="text-sm text-slate-600">Export the designed 3D model back to your CAD software and generate final reports.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="analysis" class="py-20 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-slate-900">Analysis & Reporting</h2>
+                    <p class="mt-2 text-slate-600 max-w-2xl mx-auto">Get clear, code-based pass/fail results in minutes and generate comprehensive reports to document your work.</p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div class="text-center md:text-left">
+                        <h3 class="text-2xl font-semibold text-slate-800">Instant Results</h3>
+                        <p class="mt-4 text-slate-600">The software provides a clear summary of all code checks. In the example chart, you can see a typical distribution of analysis results for plates, bolts, and welds, making it easy to spot which components have passed, are close to their limit, or have failed.</p>
+                        <button id="generate-report-btn" class="mt-6 inline-block bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-6 rounded-lg transition">Generate Sample Report</button>
+                    </div>
+                    <div>
+                        <div class="chart-container">
+                            <canvas id="analysisChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="modeling" class="py-20">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-slate-900">Efficient Modeling Features</h2>
+                    <p class="mt-2 text-slate-600 max-w-2xl mx-auto">Speed up your design process with powerful templates and a collaborative connection library.</p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="bg-white p-8 rounded-lg shadow-md text-center hover:shadow-xl transition">
+                        <h3 class="text-xl font-semibold mb-2">Parametric Templates</h3>
+                        <p class="text-slate-600">Start with over 250 pre-built, editable templates for common connections, saving significant time on initial setup.</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-lg shadow-md text-center hover:shadow-xl transition">
+                        <h3 class="text-xl font-semibold mb-2">Publish to Library</h3>
+                        <p class="text-slate-600">Save your verified designs to a company-wide library, ensuring standardization and easy reuse of proven connections.</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-lg shadow-md text-center hover:shadow-xl transition">
+                        <h3 class="text-xl font-semibold mb-2">Propose a Design</h3>
+                        <p class="text-slate-600">Submit new designs to the library for peer review, fostering collaboration and building a robust set of team standards.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    
+    <div id="report-modal" class="fixed inset-0 bg-black/60 hidden items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center p-4 border-b">
+                <h3 class="text-lg font-bold">Sample Calculation Report</h3>
+                <button id="close-modal-btn" class="text-slate-500 hover:text-slate-800">&times;</button>
+            </div>
+            <div class="p-6">
+                <h4 class="font-bold text-slate-800">Project: High-Rise Office Building</h4>
+                <p class="text-sm text-slate-500 mb-4">Connection ID: C-42 (Beam to Column)</p>
+                
+                <div class="mb-4">
+                    <h5 class="font-semibold border-b pb-1 mb-2">1. Summary of Results</h5>
+                    <div class="flex justify-between items-center p-2 bg-green-100 text-green-800 rounded">
+                        <span>Analysis</span>
+                        <span class="font-bold">OK (95.2%)</span>
+                    </div>
+                    <div class="flex justify-between items-center p-2">
+                        <span>Plates</span>
+                        <span>OK (0.85)</span>
+                    </div>
+                    <div class="flex justify-between items-center p-2 bg-slate-100">
+                        <span>Bolts</span>
+                        <span>OK (0.91)</span>
+                    </div>
+                     <div class="flex justify-between items-center p-2">
+                        <span>Welds</span>
+                        <span>OK (0.78)</span>
+                    </div>
+                </div>
+                 <div class="mb-4">
+                    <h5 class="font-semibold border-b pb-1 mb-2">2. Bill of Materials</h5>
+                    <ul class="list-disc list-inside text-slate-600 text-sm">
+                        <li>Plate PL1/2"x12"x18": 1 pc</li>
+                        <li>Bolts A325 3/4" &empty;: 8 pcs</li>
+                        <li>Weld E70XX 5/16": 36 in</li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="font-semibold border-b pb-1 mb-2">3. Visualization</h5>
+                    <div class="bg-slate-200 h-48 rounded flex items-center justify-center text-slate-500">
+                        [ Stress plot image would appear here ]
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <footer class="bg-slate-800 text-white mt-20">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center text-sm text-slate-400">
+            <p>This is an interactive demonstration created by IQUITOR based on publicly available information about IDEA StatiCa.</p>
+            <p>&copy; 2025 Interactive Reports Inc. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            function updateActiveLink() {
+                let index = sections.length;
+                while(--index && window.scrollY + 50 < sections[index].offsetTop) {}
+                
+                navLinks.forEach((link) => link.classList.remove('active'));
+                const activeLink = document.querySelector(`.nav-link[href="#${sections[index].id}"]`);
+                if(activeLink) {
+                   activeLink.classList.add('active');
+                }
+            }
+            
+            window.addEventListener('scroll', updateActiveLink);
+            updateActiveLink();
+
+            const interactiveZones = document.querySelectorAll('.interactive-zone');
+            const tooltip = document.getElementById('tour-tooltip');
+            const tooltipTitle = document.getElementById('tooltip-title');
+            const tooltipText = document.getElementById('tooltip-text');
+
+            interactiveZones.forEach(zone => {
+                zone.addEventListener('mouseenter', (e) => {
+                    tooltipTitle.textContent = zone.dataset.title;
+                    tooltipText.textContent = zone.dataset.text;
+                    tooltip.classList.remove('hidden');
+                });
+                zone.addEventListener('mouseleave', () => {
+                    tooltip.classList.add('hidden');
+                });
+                 zone.addEventListener('mousemove', (e) => {
+                    tooltip.style.left = `${e.clientX + 15}px`;
+                    tooltip.style.top = `${e.clientY + 15}px`;
+                });
+            });
+            
+            const tabs = document.querySelectorAll('.tab');
+            const tabPanes = document.querySelectorAll('.tab-pane');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    
+                    const targetPane = tab.dataset.tab;
+                    tabPanes.forEach(pane => {
+                        if (pane.dataset.pane === targetPane) {
+                            pane.classList.remove('hidden');
+                        } else {
+                            pane.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+
+            const ctx = document.getElementById('analysisChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Pass (<95%)', 'Warning (95%-100%)', 'Fail (>100%)'],
+                    datasets: [{
+                        label: 'Analysis Results',
+                        data: [85, 10, 5],
+                        backgroundColor: [
+                            'rgba(34, 197, 94, 0.7)',
+                            'rgba(245, 158, 11, 0.7)',
+                            'rgba(239, 68, 68, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(22, 163, 74, 1)',
+                            'rgba(217, 119, 6, 1)',
+                            'rgba(220, 38, 38, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Code Check Summary'
+                        }
+                    }
+                }
+            });
+            
+            const modal = document.getElementById('report-modal');
+            const openModalBtn = document.getElementById('generate-report-btn');
+            const closeModalBtn = document.getElementById('close-modal-btn');
+
+            openModalBtn.addEventListener('click', () => modal.classList.replace('hidden', 'flex'));
+            closeModalBtn.addEventListener('click', () => modal.classList.replace('flex', 'hidden'));
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.replace('flex', 'hidden');
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
