@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth" x-data="appData">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>IQUITOR – Structural &amp; Automation Training</title>
+  <link rel="icon" href="rg.png" type="image/png" />
+  <meta name="theme-color" content="#1A202C" />
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Alpine.js -->
+  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <!-- AOS animations -->
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <!-- Prism.js -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <style>
+    .dark body { background: #1A202C; color: #E2E8F0; }
+  </style>
+</head>
+<body class="antialiased bg-gray-900 text-gray-100 dark:text-gray-100">
+  <!-- HEADER -->
+  <header class="fixed inset-x-0 top-0 bg-white dark:bg-gray-800 shadow z-50">
+    <div class="container mx-auto flex items-center justify-between px-6 py-4">
+      <a href="#hero" class="flex items-center space-x-2">
+        <img src="rg.png" alt="Logo" class="h-10 w-auto" />
+        <span class="text-2xl font-extrabold text-cyan-400">IQUITOR</span>
+      </a>
+      <nav class="hidden md:flex items-center space-x-6">
+        <a href="#hero" class="hover:text-cyan-400">Home</a>
+        <a href="#about" class="hover:text-cyan-400">About</a>
+        <a href="#library" class="hover:text-cyan-400">Library</a>
+        <a href="#features" class="hover:text-cyan-400">Features</a>
+        <a href="#contact" class="hover:text-cyan-400">Contact</a>
+        <a href="https://www.linkedin.com/company/iquitor/" target="_blank" aria-label="LinkedIn" class="text-gray-600 hover:text-cyan-400">
+          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M4.98 3.5C4.98 4.88 3.88 6..."/></svg>
+        </a>
+        <a href="https://youtube.com/@iquitor?si=o1Ziotj4Ji7u60RQ" target="_blank" aria-label="YouTube" class="text-gray-600 hover:text-cyan-400">
+          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M23.5 6.2s-.2-1.7..."/></svg>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="pt-24">
+    <!-- Hero -->
+    <section id="hero" class="relative h-screen flex items-center justify-center text-white bg-cover bg-center" style="background-image:url('hero.png')" data-aos="fade-up">
+      <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+      <div class="relative text-center space-y-4 px-4">
+        <h1 class="text-6xl font-bold">IQUITOR</h1>
+        <p class="text-2xl">Advanced Courses &amp; Automation Tools for Structural Engineers</p>
+        <a href="#library" class="bg-white text-gray-900 px-6 py-3 rounded-xl font-semibold shadow hover:opacity-90 transition inline-block">Explore Library</a>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="py-20 container mx-auto px-6" data-aos="fade-right">
+      <h2 class="text-4xl font-bold mb-6 text-cyan-400">About Us</h2>
+      <p class="max-w-3xl mb-4">IQUITOR empowers structural engineers with modern skills in structural analysis, design automation, and custom software development.</p>
+      <ul class="list-disc pl-5 space-y-2">
+        <li>In-depth courses on structural fundamentals</li>
+        <li>Hands-on training in VBA, OpenSTAAD, IDEA StatiCa, and more</li>
+        <li>Ready-to-use automation tools for design &amp; detailing</li>
+      </ul>
+    </section>
+
+    <!-- Library -->
+    <section id="library" class="py-20 bg-white dark:bg-gray-800 container mx-auto px-6" data-aos="fade-left">
+      <h2 class="text-3xl font-bold mb-6 text-gray-900 dark:text-gray-100">Library</h2>
+      <input x-model="filter" type="text" placeholder="Search…" class="w-full md:w-1/2 px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:border-cyan-400 mb-6" />
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <template x-for="item in files.filter(f => f.name.toLowerCase().includes(filter.toLowerCase()))" :key="item.file">
+          <div class="p-6 bg-gray-100 dark:bg-gray-700 rounded-lg shadow hover:shadow-lg transition" data-aos="zoom-in">
+            <h3 class="font-semibold text-lg mb-3" x-text="item.name"></h3>
+            <button @click="openFile(item.file)" class="px-4 py-2 bg-cyan-400 text-white rounded hover:bg-opacity-90 transition">View</button>
+          </div>
+        </template>
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section id="features" class="py-20 bg-gray-900 text-gray-100 container mx-auto px-6" data-aos="fade-up">
+      <h2 class="text-3xl font-bold mb-10 text-cyan-400 text-center">Features</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+        <div><h3 class="font-semibold text-xl">Testimonials</h3><p>Student success stories in a carousel.</p></div>
+        <div><h3 class="font-semibold text-xl">Blog &amp; News</h3><p>Articles on trends and automation tips.</p></div>
+        <div><h3 class="font-semibold text-xl">FAQs</h3><p>Collapsible Q&amp;A for quick help.</p></div>
+        <div><h3 class="font-semibold text-xl">Newsletter</h3><p>Subscribe for updates and tips.</p></div>
+      </div>
+    </section>
+
+    <!-- Viewer Modal -->
+    <div x-show="showViewer" x-transition class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div class="relative bg-white dark:bg-gray-800 w-11/12 md:w-3/4 lg:w-2/3 h-4/5 rounded-lg overflow-hidden shadow-lg">
+        <button @click="closeViewer" class="absolute top-4 right-4 text-gray-600 dark:text-gray-300 hover:text-white text-2xl">&times;</button>
+        <iframe :src="currentFile" class="w-full h-full border-0"></iframe>
+      </div>
+    </div>
+
+    <!-- Contact & Newsletter -->
+    <section id="contact" class="py-20 bg-white dark:bg-gray-800 container mx-auto px-6" data-aos="fade-up">
+      <h2 class="text-3xl font-bold mb-6 text-cyan-400">Get in Touch</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+        <form action="https://formspree.io/f/your-form-id" method="POST" class="space-y-4">
+          <div><label class="block mb-1">Name</label><input type="text" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:border-cyan-400" /></div>
+          <div><label class="block mb-1">Email</label><input type="email" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:border-cyan-400" /></div>
+          <div><label class="block mb-1">Message</label><textarea class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:border-cyan-400"></textarea></div>
+          <button type="submit" class="px-6 py-3 bg-orange-500 text-white rounded-lg hover:opacity-90 transition">Send Message</button>
+        </form>
+        <div>
+          <h3 class="text-xl font-semibold mb-2 text-cyan-400">Join Our Newsletter</h3>
+          <p class="mb-4">Get the latest course updates and automation tips.</p>
+          <form action="https://formspree.io/f/your-newsletter-id" method="POST" class="flex space-x-2">
+            <input type="email" placeholder="Your email" class="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:border-cyan-400" />
+            <button type="submit" class="px-4 py-2 bg-cyan-400 text-white rounded-lg hover:opacity-90 transition">Subscribe</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="py-6 bg-gray-800 text-center text-gray-400">
+    <div class="flex justify-center space-x-4 mb-4">
+      <a href="https://www.linkedin.com/company/iquitor/" target="_blank" aria-label="LinkedIn" class="hover:text-cyan-400">
+        <svg class="w-6 h-6 inline" fill="currentColor" viewBox="0 0 24 24"><path d="M4.98 3.5C4.98..."/></svg>
+      </a>
+      <a href="https://youtube.com/@iquitor?si=o1Ziotj4Ji7u60RQ" target="_blank" aria-label="YouTube" class="hover:text-cyan-400">
+        <svg class="w-6 h-6 inline" fill="currentColor" viewBox="0 0 24 24"><path d="M23.5 6.2..."/></svg>
+      </a>
+    </div>
+    <p>&copy; 2025 IQUITOR. All rights reserved.</p>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    document.addEventListener('alpine:init', () => {
+      Alpine.data('appData', () => ({
+        darkMode: false,
+        showViewer: false,
+        currentFile: '',
+        filter: '',
+        files: [
+          { name: 'I-Beam Introduction', file: 'Introduction.html' },
+          { name: 'API Automation Guide', file: 'API.html' },
+          { name: 'VBA Automation Course', file: 'Automation.html' },
+          { name: 'Google AI Comparison', file: 'Google AI.html' },
+          { name: 'Structural History', file: 'History.html' },
+          { name: 'IDEA StatiCa Course', file: 'IdeaStaticaCourse.html' },
+          { name: 'IDEA Overview', file: 'IntroToIdeaStatica.html' },
+          { name: 'IDEA Operations', file: 'Operations in Idea statica.html' }
+        ],
+        toggleTheme() {
+          this.darkMode = !this.darkMode;
+          document.documentElement.classList.toggle('dark', this.darkMode);
+        },
+        openFile(file) {
+          this.currentFile = encodeURI(file);
+          this.showViewer = true;
+          setTimeout(() => Prism.highlightAll(), 200);
+        },
+        closeViewer() {
+          this.showViewer = false;
+          this.currentFile = '';
+        }
+      }));
+    });
+    window.addEventListener('load', () => AOS.init());
+    if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');
+  </script>
+</body>
+</html>
