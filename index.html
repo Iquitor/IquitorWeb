@@ -1,175 +1,568 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth" x-data="appData">
+<html lang="en" class="scroll-smooth">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>IQUITOR – Structural &amp; Automation Training</title>
-  <link rel="icon" href="rg.png" type="image/png" />
-  <meta name="theme-color" content="#1A202C" />
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Alpine.js -->
-  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-  <!-- AOS animations -->
-  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  <!-- Prism.js -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-  <style>
-    .dark body { background: #1A202C; color: #E2E8F0; }
-  </style>
-</head>
-<body class="antialiased bg-gray-900 text-gray-100 dark:text-gray-100">
-  <!-- HEADER -->
-  <header class="fixed inset-x-0 top-0 bg-white dark:bg-gray-800 shadow z-50">
-    <div class="container mx-auto flex items-center justify-between px-6 py-4">
-      <a href="#hero" class="flex items-center space-x-2">
-        <img src="rg.png" alt="Logo" class="h-10 w-auto" />
-        <span class="text-2xl font-extrabold text-cyan-400">IQUITOR</span>
-      </a>
-      <nav class="hidden md:flex items-center space-x-6">
-        <a href="#hero" class="hover:text-cyan-400">Home</a>
-        <a href="#about" class="hover:text-cyan-400">About</a>
-        <a href="#library" class="hover:text-cyan-400">Library</a>
-        <a href="#features" class="hover:text-cyan-400">Features</a>
-        <a href="#contact" class="hover:text-cyan-400">Contact</a>
-        <a href="https://www.linkedin.com/company/iquitor/" target="_blank" aria-label="LinkedIn" class="text-gray-600 hover:text-cyan-400">
-          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M4.98 3.5C4.98 4.88 3.88 6..."/></svg>
-        </a>
-        <a href="https://youtube.com/@iquitor?si=o1Ziotj4Ji7u60RQ" target="_blank" aria-label="YouTube" class="text-gray-600 hover:text-cyan-400">
-          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M23.5 6.2s-.2-1.7..."/></svg>
-        </a>
-      </nav>
-    </div>
-  </header>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IQUITOR | Structural Engineering Courses & AI Automation</title>
+    
+    <!-- Favicon and Theme Color -->
+    <link rel="icon" href="logo.png" type="image/png">
+    <meta name="theme-color" content="#020617">
 
-  <!-- MAIN CONTENT -->
-  <main class="pt-24">
-    <!-- Hero -->
-    <section id="hero" class="relative h-screen flex items-center justify-center text-white bg-cover bg-center" style="background-image:url('hero.png')" data-aos="fade-up">
-      <div class="absolute inset-0 bg-black bg-opacity-50"></div>
-      <div class="relative text-center space-y-4 px-4">
-        <h1 class="text-6xl font-bold">IQUITOR</h1>
-        <p class="text-2xl">Advanced Courses &amp; Automation Tools for Structural Engineers</p>
-        <a href="#library" class="bg-white text-gray-900 px-6 py-3 rounded-xl font-semibold shadow hover:opacity-90 transition inline-block">Explore Library</a>
-      </div>
-    </section>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- About -->
-    <section id="about" class="py-20 container mx-auto px-6" data-aos="fade-right">
-      <h2 class="text-4xl font-bold mb-6 text-cyan-400">About Us</h2>
-      <p class="max-w-3xl mb-4">IQUITOR empowers structural engineers with modern skills in structural analysis, design automation, and custom software development.</p>
-      <ul class="list-disc pl-5 space-y-2">
-        <li>In-depth courses on structural fundamentals</li>
-        <li>Hands-on training in VBA, OpenSTAAD, IDEA StatiCa, and more</li>
-        <li>Ready-to-use automation tools for design &amp; detailing</li>
-      </ul>
-    </section>
+    <!-- Alpine.js for Interactivity -->
+    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <!-- Library -->
-    <section id="library" class="py-20 bg-white dark:bg-gray-800 container mx-auto px-6" data-aos="fade-left">
-      <h2 class="text-3xl font-bold mb-6 text-gray-900 dark:text-gray-100">Library</h2>
-      <input x-model="filter" type="text" placeholder="Search…" class="w-full md:w-1/2 px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:border-cyan-400 mb-6" />
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <template x-for="item in files.filter(f => f.name.toLowerCase().includes(filter.toLowerCase()))" :key="item.file">
-          <div class="p-6 bg-gray-100 dark:bg-gray-700 rounded-lg shadow hover:shadow-lg transition" data-aos="zoom-in">
-            <h3 class="font-semibold text-lg mb-3" x-text="item.name"></h3>
-            <button @click="openFile(item.file)" class="px-4 py-2 bg-cyan-400 text-white rounded hover:bg-opacity-90 transition">View</button>
-          </div>
-        </template>
-      </div>
-    </section>
-
-    <!-- Features -->
-    <section id="features" class="py-20 bg-gray-900 text-gray-100 container mx-auto px-6" data-aos="fade-up">
-      <h2 class="text-3xl font-bold mb-10 text-cyan-400 text-center">Features</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-        <div><h3 class="font-semibold text-xl">Testimonials</h3><p>Student success stories in a carousel.</p></div>
-        <div><h3 class="font-semibold text-xl">Blog &amp; News</h3><p>Articles on trends and automation tips.</p></div>
-        <div><h3 class="font-semibold text-xl">FAQs</h3><p>Collapsible Q&amp;A for quick help.</p></div>
-        <div><h3 class="font-semibold text-xl">Newsletter</h3><p>Subscribe for updates and tips.</p></div>
-      </div>
-    </section>
-
-    <!-- Viewer Modal -->
-    <div x-show="showViewer" x-transition class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div class="relative bg-white dark:bg-gray-800 w-11/12 md:w-3/4 lg:w-2/3 h-4/5 rounded-lg overflow-hidden shadow-lg">
-        <button @click="closeViewer" class="absolute top-4 right-4 text-gray-600 dark:text-gray-300 hover:text-white text-2xl">&times;</button>
-        <iframe :src="currentFile" class="w-full h-full border-0"></iframe>
-      </div>
-    </div>
-
-    <!-- Contact & Newsletter -->
-    <section id="contact" class="py-20 bg-white dark:bg-gray-800 container mx-auto px-6" data-aos="fade-up">
-      <h2 class="text-3xl font-bold mb-6 text-cyan-400">Get in Touch</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-        <form action="https://formspree.io/f/your-form-id" method="POST" class="space-y-4">
-          <div><label class="block mb-1">Name</label><input type="text" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:border-cyan-400" /></div>
-          <div><label class="block mb-1">Email</label><input type="email" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:border-cyan-400" /></div>
-          <div><label class="block mb-1">Message</label><textarea class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:border-cyan-400"></textarea></div>
-          <button type="submit" class="px-6 py-3 bg-orange-500 text-white rounded-lg hover:opacity-90 transition">Send Message</button>
-        </form>
-        <div>
-          <h3 class="text-xl font-semibold mb-2 text-cyan-400">Join Our Newsletter</h3>
-          <p class="mb-4">Get the latest course updates and automation tips.</p>
-          <form action="https://formspree.io/f/your-newsletter-id" method="POST" class="flex space-x-2">
-            <input type="email" placeholder="Your email" class="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:border-cyan-400" />
-            <button type="submit" class="px-4 py-2 bg-cyan-400 text-white rounded-lg hover:opacity-90 transition">Subscribe</button>
-          </form>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- FOOTER -->
-  <footer class="py-6 bg-gray-800 text-center text-gray-400">
-    <div class="flex justify-center space-x-4 mb-4">
-      <a href="https://www.linkedin.com/company/iquitor/" target="_blank" aria-label="LinkedIn" class="hover:text-cyan-400">
-        <svg class="w-6 h-6 inline" fill="currentColor" viewBox="0 0 24 24"><path d="M4.98 3.5C4.98..."/></svg>
-      </a>
-      <a href="https://youtube.com/@iquitor?si=o1Ziotj4Ji7u60RQ" target="_blank" aria-label="YouTube" class="hover:text-cyan-400">
-        <svg class="w-6 h-6 inline" fill="currentColor" viewBox="0 0 24 24"><path d="M23.5 6.2..."/></svg>
-      </a>
-    </div>
-    <p>&copy; 2025 IQUITOR. All rights reserved.</p>
-  </footer>
-
-  <!-- SCRIPTS -->
-  <script>
-    document.addEventListener('alpine:init', () => {
-      Alpine.data('appData', () => ({
-        darkMode: false,
-        showViewer: false,
-        currentFile: '',
-        filter: '',
-        files: [
-          { name: 'I-Beam Introduction', file: 'Introduction.html' },
-          { name: 'API Automation Guide', file: 'API.html' },
-          { name: 'VBA Automation Course', file: 'Automation.html' },
-          { name: 'Google AI Comparison', file: 'Google AI.html' },
-          { name: 'Structural History', file: 'History.html' },
-          { name: 'IDEA StatiCa Course', file: 'IdeaStaticaCourse.html' },
-          { name: 'IDEA Overview', file: 'IntroToIdeaStatica.html' },
-          { name: 'IDEA Operations', file: 'Operations in Idea statica.html' }
-        ],
-        toggleTheme() {
-          this.darkMode = !this.darkMode;
-          document.documentElement.classList.toggle('dark', this.darkMode);
-        },
-        openFile(file) {
-          this.currentFile = encodeURI(file);
-          this.showViewer = true;
-          setTimeout(() => Prism.highlightAll(), 200);
-        },
-        closeViewer() {
-          this.showViewer = false;
-          this.currentFile = '';
+    <!-- Custom CSS for Advanced Styling -->
+    <style>
+        /* Base font and new color palette */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #0f172a; /* slate-900 */
+            color: #e2e8f0; /* slate-200 */
         }
-      }));
-    });
-    window.addEventListener('load', () => AOS.init());
-    if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');
-  </script>
+
+        /* Revised accent text for a cleaner look */
+        .accent-text {
+            color: #60a5fa; /* blue-400 */
+        }
+
+        /* Revised glassmorphism effect with new colors */
+        .glass-card {
+            background: rgba(30, 41, 59, 0.6); /* slate-800 with opacity */
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(51, 65, 85, 0.7); /* slate-700 */
+            transition: all 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 32px 0 rgba(96, 165, 250, 0.15); /* blue-400 shadow */
+            border-color: rgba(96, 165, 250, 0.4);
+        }
+
+        /* Hero section pointing to a specific, single Unsplash image */
+        .hero-bg {
+            background-image: linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 1)), url('https://images.unsplash.com/photo-1487958449943-2429e8be8625?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        /* Keyframes for the testimonial scroller */
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(calc(-382px * 6)); } /* (card width + horizontal margin) * number of original items */
+        }
+
+        .scroller-inner {
+            animation: scroll 40s linear infinite;
+        }
+
+        /* Custom button style for secondary actions */
+        .secondary-button {
+             background-color: transparent;
+             border: 2px solid #334155; /* slate-700 */
+             color: #cbd5e1; /* slate-300 */
+             transition: all 0.3s ease;
+        }
+        .secondary-button:hover {
+            background-color: #1e293b; /* slate-800 */
+            border-color: #60a5fa; /* blue-400 */
+            color: #ffffff;
+        }
+        
+        /* Styles for the new library tabs */
+        .tab-button {
+            padding: 0.5rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        .tab-button.active {
+            background-color: #60a5fa; /* blue-400 */
+            color: #0f172a; /* slate-900 */
+        }
+        .tab-button:not(.active) {
+            background-color: #1e293b; /* slate-800 */
+            color: #94a3b8; /* slate-400 */
+        }
+         .tab-button:not(.active):hover {
+            background-color: #334155; /* slate-700 */
+            color: #e2e8f0;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass-card">
+        <div class="container mx-auto px-6 py-4 flex flex-wrap justify-between items-center">
+            <!-- Logo -->
+            <a href="#" class="flex items-center space-x-3 mb-2 sm:mb-0">
+                <img src="logo.png" alt="IQUITOR Logo" class="h-16 w-auto">
+                <span class="text-2xl font-bold text-white tracking-wider">IQUITOR</span>
+            </a>
+
+            <!-- Always-Visible Navigation -->
+            <div class="w-full sm:w-auto flex flex-wrap justify-center sm:justify-end items-center gap-x-8 gap-y-2 mt-2 sm:mt-0">
+                <nav class="flex items-center space-x-6 text-lg text-slate-300">
+                    <a href="#services" class="hover:text-blue-400 transition">Services</a>
+                    <a href="#tools" class="hover:text-blue-400 transition">Tools</a>
+                    <a href="#library" class="hover:text-blue-400 transition">Library</a>
+                    <a href="#about" class="hover:text-blue-400 transition">About</a>
+                </nav>
+                <a href="#contact" class="px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-lg hover:bg-blue-700 transition">Contact Us</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="pt-32"> <!-- Adjusted padding-top to account for taller wrapping header -->
+        <!-- Hero Section -->
+        <section id="hero" class="min-h-screen flex items-center justify-center hero-bg -mt-32"> <!-- Adjusted margin-top to pull content up -->
+            <div class="text-center px-4 pt-32"> <!-- Added padding-top here as well -->
+                <h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold text-white leading-tight">
+                    Engineering the Future.<br>Automating the <span class="accent-text">Present.</span>
+                </h1>
+                <p class="mt-6 text-lg md:text-xl max-w-3xl mx-auto text-slate-300">
+                    Expert-led courses and AI-powered tools for the next generation of structural engineers. Master essential software, fundamental principles, and workflow automation.
+                </p>
+                <div class="mt-10 flex flex-col sm:flex-row justify-center items-center gap-4">
+                    <a href="#services" class="px-8 py-4 bg-blue-600 text-white font-bold rounded-lg shadow-xl hover:bg-blue-700 transition text-lg w-full sm:w-auto">Explore Courses</a>
+                    <a href="#tools" class="px-8 py-4 secondary-button rounded-lg font-bold text-lg w-full sm:w-auto">Discover Tools</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section (Courses & Workshops) -->
+        <section id="services" class="py-24 border-t border-slate-700">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl font-bold text-white">Unlock Your Potential</h2>
+                    <p class="mt-4 text-lg text-slate-400 max-w-2xl mx-auto">From fundamentals to advanced automation, our courses are designed to make you an industry leader.</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Course Card 1: Fundamentals -->
+                    <div class="glass-card rounded-xl overflow-hidden flex flex-col">
+                        <img src="https://images.pexels.com/photos/3729557/pexels-photo-3729557.jpeg" alt="Structural Fundamentals Course" class="w-full h-48 object-cover">
+                        <div class="p-6 flex flex-col flex-grow">
+                            <h3 class="text-2xl font-bold text-white mb-3">Structural Engineering Fundamentals</h3>
+                            <p class="text-slate-400 mb-6 flex-grow">Build a rock-solid foundation. Master the core principles of analysis and design that every great engineer needs to know.</p>
+                            <a href="#contact" class="mt-auto text-blue-400 font-semibold hover:text-blue-300 transition group">Learn More <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i></a>
+                        </div>
+                    </div>
+
+                    <!-- Course Card 2: Software Training -->
+                    <div class="glass-card rounded-xl overflow-hidden flex flex-col">
+                        <img src="https://images.unsplash.com/photo-1542831371-29b0f74f9713?q=80&w=2070&auto=format&fit=crop" alt="Software Training Course" class="w-full h-48 object-cover">
+                        <div class="p-6 flex flex-col flex-grow">
+                            <h3 class="text-2xl font-bold text-white mb-3">Advanced Software Mastery</h3>
+                            <p class="text-slate-400 mb-6 flex-grow">Go beyond the basics. In-depth, hands-on training for software like IDEA StatiCa, STAAD.Pro, and more.</p>
+                            <a href="#contact" class="mt-auto text-blue-400 font-semibold hover:text-blue-300 transition group">Learn More <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i></a>
+                        </div>
+                    </div>
+
+                    <!-- Course Card 3: AI & Automation -->
+                    <div class="glass-card rounded-xl overflow-hidden flex flex-col">
+                        <img src="https://images.unsplash.com/photo-1674027444485-cec3da58eef4?q=80&w=1932&auto=format&fit=crop" alt="AI & Automation Course" class="w-full h-48 object-cover">
+                        <div class="p-6 flex flex-col flex-grow">
+                            <h3 class="text-2xl font-bold text-white mb-3">AI-Assisted Automation</h3>
+                            <p class="text-slate-400 mb-6 flex-grow">Revolutionize your workflow. Learn to automate repetitive tasks using VBA, Python, and generative AI to code for you.</p>
+                            <a href="#contact" class="mt-auto text-blue-400 font-semibold hover:text-blue-300 transition group">Learn More <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Automation Tools Section -->
+        <section id="tools" class="py-24 bg-slate-900/70 border-t border-slate-700">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl font-bold text-white">Work Smarter, Not Harder</h2>
+                    <p class="mt-4 text-lg text-slate-400 max-w-2xl mx-auto">Explore our suite of affordable automation tools, crafted by engineers for engineers.</p>
+                </div>
+                
+                <!-- Paid Tools Subsection -->
+                <div class="mb-20">
+                    <h3 class="text-3xl font-bold text-white mb-8 text-center border-b-2 border-slate-700 pb-4">Premium Tools</h3>
+                    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                        <div class="glass-card p-6 text-center flex flex-col">
+                            <i class="fas fa-chart-line text-4xl accent-text mb-4"></i>
+                            <div class="flex-grow">
+                                <h4 class="text-xl font-bold text-white mb-2">Section Optimiser</h4>
+                                <p class="text-sm text-slate-400 mb-4">Easily view, analyze and edit the section directly from post-processing.</p>
+                            </div>
+                            <p class="text-2xl font-semibold text-blue-400 mb-4">₹4999</p>
+                            <a href="#contact" class="mt-auto w-full px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition">Learn More</a>
+                        </div>
+                         <div class="glass-card p-6 text-center flex flex-col">
+                            <i class="fas fa-chart-pie text-4xl accent-text mb-4"></i>
+                            <div class="flex-grow">
+                                <h4 class="text-xl font-bold text-white mb-2">Section Optimiser-Mini</h4>
+                                <p class="text-sm text-slate-400 mb-4">A miniature version of the Section Optimiser.</p>
+                            </div>
+                            <p class="text-2xl font-semibold text-blue-400 mb-4">₹2999</p>
+                            <a href="#contact" class="mt-auto w-full px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition">Learn More</a>
+                        </div>
+                        <div class="glass-card p-6 text-center flex flex-col">
+                            <i class="fas fa-ruler-combined text-4xl accent-text mb-4"></i>
+                            <div class="flex-grow">
+                                <h4 class="text-xl font-bold text-white mb-2">Slope Correction</h4>
+                                <p class="text-sm text-slate-400 mb-4">Correct the slope of your entire model wih 2-3 clicks.</p>
+                            </div>
+                            <p class="text-2xl font-semibold text-blue-400 mb-4">₹999</p>
+                            <a href="#contact" class="mt-auto w-full px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition">Learn More</a>
+                        </div>
+                        <div class="glass-card p-6 text-center flex flex-col">
+                            <i class="fas fa-arrows-alt-h text-4xl accent-text mb-4"></i>
+                            <div class="flex-grow">
+                                <h4 class="text-xl font-bold text-white mb-2">Proportional Move</h4>
+                                <p class="text-sm text-slate-400 mb-4">Move nodes along members easily.</p>
+                            </div>
+                            <p class="text-2xl font-semibold text-blue-400 mb-4">₹999</p>
+                            <a href="#contact" class="mt-auto w-full px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Free Tools Subsection -->
+                <div>
+                    <h3 class="text-3xl font-bold text-white mb-8 text-center border-b-2 border-slate-700 pb-4">Free Tools</h3>
+                     <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                        <div class="glass-card p-6 text-center flex flex-col">
+                            <i class="fas fa-eye text-4xl accent-text mb-4"></i>
+                            <div class="flex-grow">
+                                <h4 class="text-xl font-bold text-white mb-2">Section Viewer</h4>
+                                <p class="text-sm text-slate-400 mb-4">Easily view the section sizes of the members in your staad model.</p>
+                            </div>
+                            <a href="#contact" class="mt-auto w-full px-6 py-2 secondary-button rounded-lg font-semibold">Download</a>
+                        </div>
+                        <div class="glass-card p-6 text-center flex flex-col">
+                            <i class="fas fa-arrows-left-right text-4xl accent-text mb-4"></i>
+                            <div class="flex-grow">
+                                <h4 class="text-xl font-bold text-white mb-2">Horizontal Deflection</h4>
+                                <p class="text-sm text-slate-400 mb-4">Easily check whether members have passed for horizontal deflection.</p>
+                            </div>
+                            <a href="#contact" class="mt-auto w-full px-6 py-2 secondary-button rounded-lg font-semibold">Download</a>
+                        </div>
+                        <div class="glass-card p-6 text-center flex flex-col">
+                            <i class="fas fa-arrows-up-down text-4xl accent-text mb-4"></i>
+                            <div class="flex-grow">
+                                <h4 class="text-xl font-bold text-white mb-2">Vertical Deflection</h4>
+                                <p class="text-sm text-slate-400 mb-4">Easily check whether members have passed for vertical deflection.</p>
+                            </div>
+                            <a href="#contact" class="mt-auto w-full px-6 py-2 secondary-button rounded-lg font-semibold">Download</a>
+                        </div>
+                        <div class="glass-card p-6 text-center flex flex-col">
+                            <i class="fas fa-exchange-alt text-4xl accent-text mb-4"></i>
+                            <div class="flex-grow">
+                                <h4 class="text-xl font-bold text-white mb-2">Beam Incidence</h4>
+                                <p class="text-sm text-slate-400 mb-4">Easily make the higher depth at start node of all the members with few clicks</p>
+                            </div>
+                            <a href="#contact" class="mt-auto w-full px-6 py-2 secondary-button rounded-lg font-semibold">Download</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Knowledge Library Section -->
+        <section id="library" class="py-24 border-t border-slate-700" x-data="{ 
+            activeTab: 'general',
+            filter: '', 
+            files: [
+                { name: 'I-Beam Introduction', file: 'Introduction.html', tags: ['Fundamentals'] },
+                { name: 'API Automation Guide', file: 'API.html', tags: ['Automation', 'AI'] },
+                { name: 'VBA Automation Course Details', file: 'Automation.html', tags: ['Automation', 'Courses'] },
+                { name: 'Google AI Tool Comparison', file: 'GoogleAI.html', tags: ['AI', 'Tech'] },
+                { name: 'The Evolution of Structural Analysis', file: 'History.html', tags: ['Fundamentals', 'History'] },
+                { name: 'IDEA StatiCa Course Details', file: 'IdeaStaticaCourse.html', tags: ['Software', 'Courses'] },
+                { name: 'Intro to IDEA StatiCa', file: 'IntroToIdeaStatica.html', tags: ['Software', 'Fundamentals'] },
+                { name: 'Operations in IDEA StatiCa', file: 'Operations in Idea statica.html', tags: ['Software'] },
+                { name: 'The Automation Advantage', file: 'TheAutomationAdvantage.html', tags: ['Software','Automation', 'AI'] }
+            ] 
+          }">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl md:text-5xl font-bold text-white">Knowledge Library</h2>
+                    <p class="mt-4 text-lg text-slate-400 max-w-2xl mx-auto">Browse our collection of free articles, guides, and LinkedIn insights.</p>
+                </div>
+                
+                <!-- Tab Buttons -->
+                <div class="flex justify-center gap-4 mb-10">
+                    <button @click="activeTab = 'general'" :class="{ 'active': activeTab === 'general' }" class="tab-button">
+                        <i class="fas fa-book-open mr-2"></i> General Library
+                    </button>
+                    <button @click="activeTab = 'linkedin'" :class="{ 'active': activeTab === 'linkedin' }" class="tab-button">
+                        <i class="fab fa-linkedin mr-2"></i> LinkedIn Library
+                    </button>
+                </div>
+
+                <!-- General Library Content -->
+                <div x-show="activeTab === 'general'" x-transition>
+                    <input x-model="filter" type="text" placeholder="Search articles..." class="w-full max-w-lg mx-auto block mb-12 px-5 py-3 rounded-lg bg-slate-800 border border-slate-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+
+                    <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                        <template x-for="item in files.filter(f => f.name.toLowerCase().includes(filter.toLowerCase()))" :key="item.file">
+                            <a :href="item.file" target="_blank" class="block glass-card rounded-lg p-6">
+                                <h3 class="font-bold text-lg text-white mb-2" x-text="item.name"></h3>
+                                <div class="flex flex-wrap gap-2 mt-4">
+                                    <template x-for="tag in item.tags" :key="tag">
+                                        <span class="text-xs bg-slate-700 text-blue-400 px-2 py-1 rounded-full" x-text="tag"></span>
+                                    </template>
+                                </div>
+                            </a>
+                        </template>
+                    </div>
+                </div>
+
+                <!-- LinkedIn Library Content -->
+                <div x-show="activeTab === 'linkedin'" x-transition>
+                    <p class="text-center text-slate-400 mb-8 max-w-2xl mx-auto">A collection of our top posts and insights shared on LinkedIn. Click on any post to view it directly on LinkedIn.</p>
+                    <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        
+                        <!-- Post 1: Faris Sayed - Parametric Modelling -->
+                        <a href="https://www.linkedin.com/posts/faris-sayed_my-experience-with-parametric-modelling-in-activity-7340382966985973762-jZAH" target="_blank" class="block glass-card rounded-lg overflow-hidden flex flex-col group">
+                            <div class="p-6 flex-grow">
+                                <h4 class="font-semibold text-blue-400 mb-2">The Power of Parametric Modelling</h4>
+                                <p class="text-slate-300 text-sm">An experience with parametric modelling in Tekla and Grasshopper for a complex facade, highlighting the automation of generating CNC files and drawings.</p>
+                            </div>
+                            <img src="https://assets-us-01.kc-usercontent.com/1ca05609-4ad1-009e-bc40-2e1230b16a75/139867d9-1f69-48a5-90d1-0f79cd86f52e/release%20note%20intro%20slideparametric.png?w=1920&h=1440" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300" alt="Abstract parametric design">
+                        </a>
+
+                        <!-- Post 2: Nipin Krishna - IDEA StatiCa -->
+                        <a href="https://www.linkedin.com/posts/nipinkrishna_structuralengineering-ideastatica-connectiondesign-activity-7339959670553354240-NfZa" target="_blank" class="block glass-card rounded-lg overflow-hidden flex flex-col group">
+                           <div class="p-6 flex-grow">
+                                <h4 class="font-semibold text-blue-400 mb-2">Advanced Connection Design</h4>
+                                <p class="text-slate-300 text-sm">Exploring a complex multi-member steel connection modeled in IDEA StatiCa, showcasing the software's capability to handle intricate geometries.</p>
+                            </div>
+                            <img src="https://assets-us-01.kc-usercontent.com/1ca05609-4ad1-009e-bc40-2e1230b16a75/a8533c33-bf7d-43e6-a2b1-234fce7f9f07/Title_pic.jpg?w=1920&h=1440" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300" alt="Steel connection diagram">
+                        </a>
+
+                        <!-- Post 3: Nipin Krishna - STAAD.Pro Automation -->
+                         <a href="https://www.linkedin.com/posts/nipinkrishna_structuralengineering-staadpro-portalframe-activity-7332106032749461507--__d" target="_blank" class="block glass-card rounded-lg overflow-hidden flex flex-col group">
+                            <div class="p-6 flex-grow">
+                                <h4 class="font-semibold text-blue-400 mb-2">Automating Portal Frame Design</h4>
+                                <p class="text-slate-300 text-sm">A demonstration of automating portal frame design in STAAD.Pro using VBA, from geometry and loading to result extraction, all driven from Excel.</p>
+                            </div>
+                            <img src="https://media.licdn.com/dms/image/v2/D5622AQEiCtM-2utaRg/feedshare-shrink_2048_1536/B56ZcDfkeFHUAo-/0/1748110299809?e=1753920000&v=beta&t=VZ8Sdw3Xy0x8Ujl5GLYYW3ciQ2T9tBGdvi9S9uL03vE" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300" alt="Large steel warehouse structure">
+                        </a>
+
+                        <!-- Post 4: Nipin Krishna - STAAD.Pro Anomaly -->
+                        <a href="https://www.linkedin.com/posts/nipinkrishna_exploring-a-computational-anomaly-in-staadpro-activity-7270283774012067840-07Fw" target="_blank" class="block glass-card rounded-lg overflow-hidden flex flex-col group">
+                           <div class="p-6 flex-grow">
+                                <h4 class="font-semibold text-blue-400 mb-2">Investigating a STAAD.Pro Anomaly</h4>
+                                <p class="text-slate-300 text-sm">A deep dive into a computational bug where member query objects failed to retrieve results, and the process of investigating the anomaly.</p>
+                            </div>
+                            <img src="https://images.pexels.com/photos/175771/pexels-photo-175771.jpeg" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300" alt="Code on a screen">
+                        </a>
+
+                        <!-- Post 5: Nipin Krishna - STAAD.Pro Instability -->
+                        <a href="https://www.linkedin.com/posts/nipinkrishna_understanding-instability-warnings-in-activity-7269771880746639361-g4f-" target="_blank" class="block glass-card rounded-lg overflow-hidden flex flex-col group">
+                           <div class="p-6 flex-grow">
+                                <h4 class="font-semibold text-blue-400 mb-2">Understanding Instability Warnings</h4>
+                                <p class="text-slate-300 text-sm">Explaining how to interpret and resolve instability warnings in STAAD.Pro by discussing DOFs and the importance of proper supports.</p>
+                            </div>
+                            <img src="https://img-c.udemycdn.com/course/750x422/1442532_79bd_5.jpg" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300" alt="Structural model with analysis highlights">
+                        </a>
+                        
+                        <!-- Post 6: Nipin Krishna - Advanced Steel Connection Modeling -->
+                        <a href="https://www.linkedin.com/posts/nipinkrishna_exploring-advanced-steel-connection-modeling-activity-7262861126873284608-SxKe" target="_blank" class="block glass-card rounded-lg overflow-hidden flex flex-col group">
+                           <div class="p-6 flex-grow">
+                                <h4 class="font-semibold text-blue-400 mb-2">Advanced Steel Connection Modeling</h4>
+                                <p class="text-slate-300 text-sm">Exploring advanced techniques for modeling complex steel connections, including a discussion of a specific multi-member joint design.</p>
+                            </div>
+                            <img src="https://media.licdn.com/dms/image/v2/D5612AQHZ7CjzB8A6Yg/article-cover_image-shrink_423_752/article-cover_image-shrink_423_752/0/1735109466869?e=1756944000&v=beta&t=n7vl14nQtREtiXLSo5RyXodnkyPe3JDPW9AMootTOSc" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300" alt="3D modeling software interface">
+                        </a>
+
+                        <!-- Post 7: Nipin Krishna - Critical Insights from Steel Fabrication -->
+                        <a href="https://www.linkedin.com/posts/nipinkrishna_critical-insights-from-my-recent-steel-activity-7262172243785375744-p5ih" target="_blank" class="block glass-card rounded-lg overflow-hidden flex flex-col group">
+                           <div class="p-6 flex-grow">
+                                <h4 class="font-semibold text-blue-400 mb-2">Insights from Steel Fabrication</h4>
+                                <p class="text-slate-300 text-sm">A look into critical insights from a recent steel fabrication and erection project, highlighting practical challenges and solutions.</p>
+                            </div>
+                            <img src="https://www.lnasolutions.com/wp-content/uploads/LNA_BlogFeaturedImage_Best-Practices-for-Steel-Connection-Design.jpg" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300" alt="Welder working on steel beams">
+                        </a>
+
+                        <!-- Post 8: K Vivek - Base Plate Design -->
+                        <a href="https://www.linkedin.com/posts/k-vivek_technical-insights-on-base-plate-modifications-activity-7274072259839844352-iMCV" target="_blank" class="block glass-card rounded-lg overflow-hidden flex flex-col group">
+                           <div class="p-6 flex-grow">
+                                <h4 class="font-semibold text-blue-400 mb-2">Technical Insights on Base Plates</h4>
+                                <p class="text-slate-300 text-sm">Insights into modifying base plates in IDEA StatiCa, explaining how stiffeners and anchor layouts affect stress distribution and performance.</p>
+                            </div>
+                            <img src="https://assets-us-01.kc-usercontent.com/1ca05609-4ad1-009e-bc40-2e1230b16a75/57e0b099-d449-47c1-8891-79d7ae4bddee/title.png?w=1920&h=1440" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300" alt="Column base plate on concrete">
+                        </a>
+                        
+                        <!-- Post 9: K Vivek - Flexure Design -->
+                        <a href="https://www.linkedin.com/posts/k-vivek_design-of-prismatic-rod-in-flexure-activity-7332360893567041537-JWWf" target="_blank" class="block glass-card rounded-lg overflow-hidden flex flex-col group">
+                           <div class="p-6 flex-grow">
+                                <h4 class="font-semibold text-blue-400 mb-2">Design of Prismatic Rod in Flexure</h4>
+                                <p class="text-slate-300 text-sm">A detailed breakdown of the design process for a prismatic rod in flexure, complete with calculations and theoretical explanations.</p>
+                            </div>
+                            <img src="https://www.ronstantensilearch.com/wp-content/uploads/2017/12/San-Diego-Yacht-Club-structural-rods-and-cables-3.jpg" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300" alt="Mathematical formulas on a chalkboard">
+                        </a>
+                        
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Us Section -->
+        <section id="about" class="py-24 bg-slate-900/70 border-t border-slate-700">
+            <div class="container mx-auto px-6">
+                <div class="max-w-4xl mx-auto text-center">
+                    <h2 class="text-4xl md:text-5xl font-bold text-white">About <span class="accent-text">IQUITOR</span></h2>
+                    <p class="mt-6 text-lg text-slate-300 leading-relaxed">We are a team of passionate structural engineers dedicated to elevating the engineering community. Our mission is to bridge the gap between traditional practices and modern technology, empowering both students and professionals with the skills they need to excel. At IQUITOR, we focus on two core areas: delivering practical, hands-on training on intricate design software, and pioneering workflow automation through AI-assisted coding and affordable, purpose-built tools.</p>
+                    <div class="mt-10 flex flex-col sm:flex-row justify-center gap-10">
+                        <div class="flex items-center gap-4">
+                            <i class="fas fa-graduation-cap text-3xl text-blue-400"></i>
+                            <div>
+                                <h4 class="text-xl font-semibold text-white">Expert-Led Education</h4>
+                                <p class="text-slate-400">Courses on fundamentals, software, and automation.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <i class="fas fa-robot text-3xl text-blue-400"></i>
+                            <div>
+                                <h4 class="text-xl font-semibold text-white">AI-Powered Automation</h4>
+                                <p class="text-slate-400">Tools and training to revolutionize your workflow.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section id="testimonials" class="py-24 border-t border-slate-700">
+            <div class="container mx-auto">
+                 <div class="text-center mb-16 px-6">
+                    <h2 class="text-4xl md:text-5xl font-bold text-white">Trusted by Engineers Worldwide</h2>
+                    <h3 class="text-2xl font-semibold text-slate-300 mt-4">Feedbacks from our Recent Workshop</h3>
+                </div>
+                <!-- Scroller -->
+                <div class="w-full inline-flex flex-nowrap overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-200px),transparent_100%)]">
+                    <ul class="flex items-center justify-center md:justify-start [&_li]:mx-4 scroller-inner">
+                        <!-- Original Testimonials -->
+                        <li class="glass-card w-[350px] p-6 rounded-lg flex-shrink-0">
+                            <p class="italic text-slate-300">"This was one of the most useful workshop I have ever attended. Thank you Nipin, Faris and Vivek for organising such an eye opener for us. You people have just started your professional journey and brought such drastic improvements in that short span. Best wishes for your future journey."</p>
+                            <p class="mt-4 font-bold text-white">- Arjun S Sanakan</p>
+                        </li>
+                        <li class="glass-card w-[350px] p-6 rounded-lg flex-shrink-0">
+                            <p class="italic text-slate-300">"Workshop wass good."</p>
+                            <p class="mt-4 font-bold text-white">- Ajay Kumar R</p>
+                        </li>
+                        <li class="glass-card w-[350px] p-6 rounded-lg flex-shrink-0">
+                            <p class="italic text-slate-300">"Good going."</p>
+                            <p class="mt-4 font-bold text-white">- Lokesh Sharma</p>
+                        </li>
+                        <li class="glass-card w-[350px] p-6 rounded-lg flex-shrink-0">
+                            <p class="italic text-slate-300">"You guys worked fantastic. You are doing great for structural engineering community."</p>
+                            <p class="mt-4 font-bold text-white">- Muhammad Islahuddin</p>
+                        </li>
+                        <li class="glass-card w-[350px] p-6 rounded-lg flex-shrink-0">
+                            <p class="italic text-slate-300">"Good Session."</p>
+                            <p class="mt-4 font-bold text-white">- Rajsekhar Barapanda</p>
+                        </li>
+                        <li class="glass-card w-[350px] p-6 rounded-lg flex-shrink-0">
+                            <p class="italic text-slate-300">"Good Session."</p>
+                            <p class="mt-4 font-bold text-white">- K S Priyanka</p>
+                        </li>
+
+                        <!-- Cloned Testimonials for seamless loop -->
+                        <li class="glass-card w-[350px] p-6 rounded-lg flex-shrink-0">
+                            <p class="italic text-slate-300">"This was one of the most useful workshop I have ever attended. Thank you Nipin, Faris and Vivek for organising such an eye opener for us. You people have just started your professional journey and brought such drastic improvements in that short span. Best wishes for your future journey."</p>
+                            <p class="mt-4 font-bold text-white">- Arjun S Sanakan</p>
+                        </li>
+                        <li class="glass-card w-[350px] p-6 rounded-lg flex-shrink-0">
+                            <p class="italic text-slate-300">"Workshop wass good."</p>
+                            <p class="mt-4 font-bold text-white">- Ajay Kumar R</p>
+                        </li>
+                        <li class="glass-card w-[350px] p-6 rounded-lg flex-shrink-0">
+                            <p class="italic text-slate-300">"Good going."</p>
+                            <p class="mt-4 font-bold text-white">- Lokesh Sharma</p>
+                        </li>
+                        <li class="glass-card w-[350px] p-6 rounded-lg flex-shrink-0">
+                            <p class="italic text-slate-300">"You guys worked fantastic. You are doing great for structural engineering community."</p>
+                            <p class="mt-4 font-bold text-white">- Muhammad Islahuddin</p>
+                        </li>
+                        <li class="glass-card w-[350px] p-6 rounded-lg flex-shrink-0">
+                            <p class="italic text-slate-300">"Good Session."</p>
+                            <p class="mt-4 font-bold text-white">- Rajsekhar Barapanda</p>
+                        </li>
+                        <li class="glass-card w-[350px] p-6 rounded-lg flex-shrink-0">
+                            <p class="italic text-slate-300">"Good Session."</p>
+                            <p class="mt-4 font-bold text-white">- K S Priyanka</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Contact Section -->
+        <section id="contact" class="py-24 border-t border-slate-700">
+            <div class="container mx-auto px-6">
+                <div class="glass-card rounded-xl p-8 md:p-12 lg:p-16">
+                    <div class="grid md:grid-cols-2 gap-12 items-center">
+                        <div>
+                            <h2 class="text-4xl font-bold text-white">Have a Question?</h2>
+                            <p class="mt-4 text-lg text-slate-300">Whether you're interested in a custom workshop, have a question about our tools, or just want to say hello, we'd love to hear from you. Just send us a message and we will get back to you soon.</p>
+                            <p class="mt-8 text-slate-400">For inquiries, email us at:<br>
+                                <a href="mailto:contact@iquitor.com" class="text-xl font-bold text-blue-400 hover:underline">contact@iquitor.com</a>
+                            </p>
+                        </div>
+                        <form action="https://formspree.io/f/xeokvevr" method="POST" class="space-y-6">
+                             <div>
+                                <label for="name" class="block text-sm font-medium text-slate-300">Full Name</label>
+                                <input type="text" name="name" id="name" required class="mt-1 block w-full px-4 py-3 rounded-lg bg-slate-800 border border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 text-white">
+                            </div>
+                            <div>
+                                <label for="email" class="block text-sm font-medium text-slate-300">Email Address</label>
+                                <input type="email" name="email" id="email" required class="mt-1 block w-full px-4 py-3 rounded-lg bg-slate-800 border border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 text-white">
+                            </div>
+                            <div>
+                                <label for="message" class="block text-sm font-medium text-slate-300">Message</label>
+                                <textarea name="message" id="message" rows="4" required class="mt-1 block w-full px-4 py-3 rounded-lg bg-slate-800 border border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"></textarea>
+                            </div>
+                            <div>
+                                <button type="submit" class="w-full px-8 py-4 bg-blue-600 text-white font-bold rounded-lg shadow-xl hover:bg-blue-700 transition text-lg">Send Message</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800 py-8">
+        <div class="container mx-auto px-6 text-center text-slate-500">
+            <div class="flex justify-center space-x-6 mb-6">
+                <a href="https://www.linkedin.com/company/iquitor/" target="_blank" aria-label="LinkedIn" class="text-2xl hover:text-blue-400 transition"><i class="fab fa-linkedin"></i></a>
+                <a href="https://youtube.com/@iquitor?si=o1Ziotj4Ji7u60RQ" target="_blank" aria-label="YouTube" class="text-2xl hover:text-blue-400 transition"><i class="fab fa-youtube"></i></a>
+                <a href="https://github.com" target="_blank" aria-label="GitHub" class="text-2xl hover:text-blue-400 transition"><i class="fab fa-github"></i></a>
+            </div>
+            <p>&copy; 2025 IQUITOR. All Rights Reserved.</p>
+            <p class="text-sm mt-2">Built by Engineers, for Engineers.</p>
+        </div>
+    </footer>
+
 </body>
 </html>
