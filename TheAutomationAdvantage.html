@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Report: Structural Software API Landscape</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #111827; /* Dark Grey/Navy */
+            background-image: radial-gradient(circle at top right, rgba(14, 165, 233, 0.15), transparent 40%), radial-gradient(circle at bottom left, rgba(233, 30, 99, 0.15), transparent 50%);
+            color: #E5E7EB; /* Light Grey Text */
+            scroll-behavior: smooth;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 700;
+            color: #f0f9ff; /* Light Sky Blue */
+        }
+        .chart-container {
+            position: relative;
+            margin: auto;
+            height: 40vh;
+            width: 100%;
+            max-width: 700px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 50vh;
+                max-height: 450px;
+            }
+        }
+        .card {
+            background-color: rgba(31, 41, 55, 0.7); /* Darker grey with opacity */
+            border-radius: 8px;
+            border: 1px solid #374151; /* Grey 700 */
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+            transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+            overflow: hidden;
+            position: relative;
+            backdrop-filter: blur(10px);
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: #0ea5e9; /* Sky 500 */
+            box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+        }
+        .tag {
+            background-color: #374151; /* Grey 700 */
+            color: #d1d5db; /* Grey 300 */
+            font-size: 0.75rem;
+            font-weight: 500;
+            padding: 0.25rem 0.75rem;
+            border-radius: 16px;
+        }
+        .accent-color {
+            color: #ec4899; /* Pink 500 */
+        }
+        h1 {
+            color: #67e8f9; /* Cyan 300 */
+            text-shadow: 0 0 15px rgba(103, 232, 249, 0.5);
+        }
+        section {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .card {
+            animation: fadeIn 0.8s ease-out forwards;
+            opacity: 0;
+        }
+        
+        /* Print Styles */
+        @media print {
+            @page {
+                size: A4 landscape;
+                margin: 1cm;
+            }
+            body {
+                background: #ffffff !important;
+                color: #000000 !important;
+                font-size: 10pt;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            section, footer, .card {
+                animation: none !important;
+                opacity: 1 !important;
+                transform: none !important;
+                transition: none !important;
+            }
+            .card:hover {
+                transform: none !important;
+                box-shadow: none !important;
+            }
+            header, footer, #comparison {
+                background: none !important;
+                padding: 1rem 0;
+                border: none;
+                box-shadow: none !important;
+            }
+            .container {
+                max-width: 100% !important;
+                padding: 0 !important;
+            }
+            #software-cards, #comparison .grid, #technology .grid {
+                display: block !important;
+            }
+            section, footer {
+                page-break-before: auto;
+                page-break-inside: avoid;
+            }
+            .card {
+                box-shadow: none !important;
+                border: 1px solid #dddddd !important;
+                page-break-inside: avoid;
+                margin-bottom: 1rem;
+            }
+            #comparison, #technology, footer {
+                page-break-before: always;
+            }
+            h1, h2, h3, p, span, div {
+                color: #000000 !important;
+                text-shadow: none !important;
+            }
+            h1 { font-size: 24pt; }
+            h2 { font-size: 18pt; }
+            h3 { font-size: 14pt; }
+            .accent-color {
+                font-weight: bold;
+            }
+            .tag {
+                background-color: #eeeeee !important;
+                border: 1px solid #cccccc !important;
+                color: #000000 !important;
+            }
+            .chart-container {
+                width: 90% !important;
+                max-width: none !important;
+                height: 250pt !important;
+                max-height: 250pt !important;
+                margin: 1rem auto;
+                page-break-inside: avoid;
+            }
+            canvas {
+                max-width: 100%;
+                max-height: 100%;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-7xl">
+
+        <header class="text-center py-16 px-4">
+            <h1 class="text-4xl md:text-6xl font-black mb-4">The Automation Advantage</h1>
+            <p class="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">
+                An interactive analysis of the API landscape in structural engineering software. Discover which tools offer the best potential for automating your workflows, enhancing productivity, and driving innovation.
+            </p>
+        </header>
+
+        <section id="overview" class="mb-20" style="animation-delay: 0.2s;">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">Software API at a Glance</h2>
+            <div id="software-cards" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            </div>
+        </section>
+
+        <section id="comparison" class="mb-20 p-8 bg-gray-800/50 rounded-2xl shadow-lg border border-gray-700" style="animation-delay: 0.4s;">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4">Comparative Analysis</h2>
+            <p class="text-center text-gray-400 mb-12 max-w-3xl mx-auto">Visualizing the trade-offs between usability and impact across the software ecosystem.</p>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="p-4">
+                    <h3 class="text-2xl font-bold mb-2 text-center">Ease of Adaptation vs. Potential Impact</h3>
+                    <p class="text-gray-400 text-center mb-4">A direct comparison of how easy each API is to learn versus the transformative potential it offers. Higher bars are better.</p>
+                    <div class="chart-container">
+                        <canvas id="easeVsImpactChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="p-4">
+                    <h3 class="text-2xl font-bold mb-2 text-center">Programming Language Ecosystem</h3>
+                    <p class="text-gray-400 text-center mb-4">Which languages dominate the structural automation space? This chart shows the frequency of support across the analyzed software.</p>
+                    <div class="chart-container">
+                        <canvas id="languageChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="technology" class="mb-20" style="animation-delay: 0.6s;">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">Understanding the Technology</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <div class="card p-8 rounded-lg">
+                    <div class="text-5xl mb-4">🗄️</div>
+                    <h3 class="text-xl font-bold mb-2">COM-Based</h3>
+                    <p class="text-gray-400">A powerful, legacy Windows-native technology. Offers deep integration but can be complex to learn for modern developers.</p>
+                </div>
+                <div class="card p-8 rounded-lg">
+                    <div class="text-5xl mb-4">🌐</div>
+                    <h3 class="text-xl font-bold mb-2">REST</h3>
+                    <p class="text-gray-400">The standard for modern web APIs. Flexible, easy to use, and works on any platform, making it great for web-based integrations.</p>
+                </div>
+                 <div class="card p-8 rounded-lg">
+                    <div class="text-5xl mb-4">🚀</div>
+                    <h3 class="text-xl font-bold mb-2">gRPC</h3>
+                    <p class="text-gray-400">A high-performance framework from Google. Faster and more efficient than REST, ideal for data-intensive tasks.</p>
+                </div>
+            </div>
+        </section>
+
+        <footer class="text-center py-16" style="animation-delay: 0.8s;">
+             <h2 class="text-3xl md:text-4xl font-bold mb-8">Key Takeaways</h2>
+             <div class="max-w-4xl mx-auto text-left space-y-6 text-lg text-gray-300">
+                <p><strong><span class="accent-color">The Legacy vs. Modern Divide:</span></strong> The market is split. Established leaders like ETABS and STAAD.Pro rely on powerful but complex COM-based APIs, while newer players like IDEA StatiCa and Dlubal RFEM are embracing modern, more accessible web-based technologies (REST & gRPC).</p>
+                <p><strong><span class="accent-color">Python is King:</span></strong> Python has emerged as the universal language for structural automation, capable of bridging the gap between legacy COM systems and modern APIs. Investing in Python skills is a future-proof strategy.</p>
+                <p><strong><span class="accent-color">Impact vs. Effort:</span></strong> The most impactful tools aren't always the easiest to learn. Autodesk Robot offers huge value for BIM workflows but is notoriously difficult to master. Conversely, IDEA StatiCa provides game-changing impact for connection design with a much gentler learning curve.</p>
+                <p><strong><span class="accent-color">The Future is Web-Based:</span></strong> The industry's clear trajectory is towards cloud-native solutions. This means modern, platform-independent APIs like REST and gRPC are not just a convenience—they are the future of engineering software integration.</p>
+             </div>
+        </footer>
+
+    </div>
+
+    <script>
+        const softwareData = [
+            {
+                name: "ETABS",
+                apiSupport: true,
+                languages: ["Python", "VBA (Excel)", "C#", "VB.NET", "MATLAB", "Fortran", "C++"],
+                easiness: 2, 
+                impact: 4, 
+                description: "Great for automating the design of buildings from start to finish. You can test many design options automatically."
+            },
+            {
+                name: "STAAD.Pro",
+                apiSupport: true,
+                languages: ["Python", "VBA/VB.NET (Excel)", "C#", "Java", "C++", "and more"],
+                easiness: 2, 
+                impact: 4,
+                description: "Excellent for connecting with Excel to create custom reports and automate repetitive tasks."
+            },
+            {
+                name: "SAP2000",
+                apiSupport: true,
+                languages: ["Python", "VBA (Excel)", "C#", "VB.NET", "MATLAB", "Fortran", "C++"],
+                easiness: 2, 
+                impact: 4, 
+                description: "Best for automating the design of complex structures like bridges. Allows for advanced, automatic design changes."
+            },
+            {
+                name: "Autodesk Robot",
+                apiSupport: true,
+                languages: ["Python", "C#", "VBA", "C++"],
+                easiness: 1, 
+                impact: 4, 
+                description: "Its main power is connecting with other Autodesk software like Revit. Perfect for BIM workflows."
+            },
+            {
+                name: "MBS",
+                apiSupport: false,
+                languages: ["Not Applicable"],
+                easiness: 0,
+                impact: 1, 
+                description: "You can only use the automation features that come with the software."
+            },
+            {
+                name: "IDEA StatiCa",
+                apiSupport: true,
+                languages: ["Python", "C# (.NET)"],
+                easiness: 3, 
+                impact: 5, 
+                description: "A game-changer for steel connection design. Lets you check hundreds of connections automatically."
+            },
+            {
+                name: "Dlubal RFEM",
+                apiSupport: true,
+                languages: ["Python", "C#"],
+                easiness: 3, 
+                impact: 4, 
+                description: "Very flexible for automating all kinds of structures. Good for creating your own custom tools."
+            }
+        ];
+
+        const cardsContainer = document.getElementById('software-cards');
+        softwareData.forEach((software, index) => {
+            const card = document.createElement('div');
+            card.className = 'card p-6 flex flex-col';
+            card.style.animationDelay = `${index * 100}ms`;
+            
+            const languagesHTML = software.languages.map(lang => `<span class="tag">${lang}</span>`).join('');
+            
+            card.innerHTML = `
+                <div class="flex-grow">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-2xl font-bold">${software.name}</h3>
+                        <span class="text-2xl">${software.apiSupport ? '✅' : '❌'}</span>
+                    </div>
+                    <p class="text-gray-400 mb-4 h-20">${software.description}</p>
+                </div>
+                <div>
+                    <h4 class="text-sm font-semibold text-gray-500 mb-2">Supported Languages:</h4>
+                    <div class="flex flex-wrap gap-2">
+                        ${languagesHTML}
+                    </div>
+                </div>
+            `;
+            cardsContainer.appendChild(card);
+        });
+
+        const tooltipCallback = {
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        title: function(tooltipItems) {
+                            const item = tooltipItems[0];
+                            let label = item.chart.data.labels[item.dataIndex];
+                            if (Array.isArray(label)) {
+                              return label.join(' ');
+                            }
+                            return label;
+                        }
+                    }
+                }
+            }
+        };
+        
+        const darkThemeColors = {
+            cyan: '#67e8f9',
+            green: '#6ee7b7',
+            pink: '#f0abfc',
+            lightText: '#9ca3af',
+            gridLines: 'rgba(255, 255, 255, 0.1)'
+        };
+
+        const easeVsImpactCtx = document.getElementById('easeVsImpactChart').getContext('2d');
+        const easeData = softwareData.filter(s => s.apiSupport).map(s => s.easiness);
+        const impactData = softwareData.filter(s => s.apiSupport).map(s => s.impact);
+        const easeVsImpactLabels = softwareData.filter(s => s.apiSupport).map(s => s.name);
+
+        new Chart(easeVsImpactCtx, {
+            type: 'bar',
+            data: {
+                labels: easeVsImpactLabels,
+                datasets: [
+                    {
+                        label: 'Easiness to Adapt',
+                        data: easeData,
+                        backgroundColor: darkThemeColors.green,
+                        borderColor: darkThemeColors.green,
+                        borderWidth: 1,
+                        borderRadius: 4
+                    },
+                    {
+                        label: 'Potential Impact',
+                        data: impactData,
+                        backgroundColor: darkThemeColors.pink,
+                        borderColor: darkThemeColors.pink,
+                        borderWidth: 1,
+                        borderRadius: 4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'y',
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        max: 5,
+                        ticks: {
+                            callback: function(value) {
+                                const labels = ['N/A', 'Difficult', 'Moderate', 'Easy', 'High', 'Very High'];
+                                return labels[value] || '';
+                            },
+                            color: darkThemeColors.lightText,
+                            font: { weight: '500' }
+                        },
+                        grid: { color: darkThemeColors.gridLines }
+                    },
+                    y: {
+                        ticks: { color: darkThemeColors.lightText, font: { weight: '500' } },
+                        grid: { display: false }
+                    }
+                },
+                 ...tooltipCallback,
+                 plugins: {
+                    ...tooltipCallback.plugins,
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: darkThemeColors.lightText,
+                            font: { size: 14 }
+                        }
+                    }
+                 }
+            }
+        });
+
+        const languageCtx = document.getElementById('languageChart').getContext('2d');
+        const languageCounts = {};
+        softwareData.forEach(software => {
+            if (software.apiSupport) {
+                software.languages.forEach(lang => {
+                    let normalizedLang = lang.split(' ')[0].replace(/[()]/g, '');
+                    if (normalizedLang.includes('VBA') || normalizedLang.includes('VB.NET')) {
+                        normalizedLang = 'VBA/VB.NET';
+                    } else if (normalizedLang.includes('.NET')) {
+                        normalizedLang = 'C#/.NET';
+                    }
+                    
+                    if(normalizedLang !== 'and' && normalizedLang !== 'Not' && normalizedLang !== 'more...') {
+                       languageCounts[normalizedLang] = (languageCounts[normalizedLang] || 0) + 1;
+                    }
+                });
+            }
+        });
+        
+        if (languageCounts['C#'] && languageCounts['C#/.NET']) {
+            languageCounts['C#/.NET'] += languageCounts['C#'];
+            delete languageCounts['C#'];
+        } else if (languageCounts['C#']) {
+             languageCounts['C#/.NET'] = languageCounts['C#'];
+             delete languageCounts['C#'];
+        }
+
+        const sortedLanguages = Object.entries(languageCounts).sort(([,a],[,b]) => a-b);
+        const languageLabels = sortedLanguages.map(entry => entry[0]);
+        const languageData = sortedLanguages.map(entry => entry[1]);
+
+        new Chart(languageCtx, {
+            type: 'bar',
+            data: {
+                labels: languageLabels,
+                datasets: [{
+                    label: 'Number of Software Packages',
+                    data: languageData,
+                    backgroundColor: darkThemeColors.cyan,
+                    borderColor: darkThemeColors.cyan,
+                    borderWidth: 1,
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'y',
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        ticks: {
+                           stepSize: 1,
+                           color: darkThemeColors.lightText,
+                           font: { weight: '500' }
+                        },
+                        grid: { color: darkThemeColors.gridLines }
+                    },
+                     y: {
+                        ticks: {
+                             color: darkThemeColors.lightText,
+                             font: { weight: '500' }
+                        },
+                        grid: { display: false }
+                    }
+                },
+                 ...tooltipCallback,
+                 plugins: {
+                    ...tooltipCallback.plugins,
+                    legend: {
+                        display: false
+                    }
+                 }
+            }
+        });
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('section, footer').forEach(el => {
+            observer.observe(el);
+        });
+
+    </script>
+
+</body>
+</html>
